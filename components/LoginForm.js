@@ -1,0 +1,96 @@
+import React from "react";
+import { formStyles } from "../styles/global";
+import {
+  View,
+  Text,
+  TouchableHighlight,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
+import { useNavigation } from '@react-navigation/native';
+
+const LOGIN_MUTATION = gql`
+  mutation LoginMutation($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      token
+      user {
+        name
+      }
+    }
+  }
+`;
+
+const LoginForm = (props) => {
+  const navigation = useNavigation();
+ const { buttonStyle, email, changeInputText, password } = props
+  return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={formStyles.container}
+    >
+      <TouchableHighlight onPress={() =>
+        navigation.navigate('Welcome', { name: 'Welcome' })
+      } >
+        <Text
+          style={{
+            fontSize: 40,
+            paddingTop: 20,
+            paddingLeft: 10,
+            transform: [{ scaleY: 2 }],
+          }}
+        >
+          &#60;
+        </Text>
+      </TouchableHighlight>
+
+      <Text style={formStyles.heading}>LOG IN</Text>
+      <Text>
+        {"\n"}
+        {"\n"}
+      </Text>
+      <TextInput
+        style={formStyles.input}
+        value={email}
+        name="email"
+        onChangeText={(e) => changeInputText("email", e)}
+        type="text"
+        placeholder="Email Address"
+      />
+      <Text>
+        {"\n"}
+        {"\n"}
+      </Text>
+      <TextInput
+        style={formStyles.input}
+        value={password}
+        onChangeText={(e) => props.changeInputText("password", e)}
+        type="password"
+        name="password"
+        secureTextEntry={true}
+        placeholder="Password"
+      />
+      <Text style={[formStyles.heading, { fontSize: 16, color: "#c7681a" }]}>
+        {"\n"}
+        {"\n"}Forgot password?
+      </Text>
+
+      <Mutation
+        mutation={LOGIN_MUTATION}
+        variables={{ email, password }}
+        onCompleted={(data) => confirm(data)}
+      >
+        {(mutation) => (
+          <View style={formStyles.formBound}>
+            <Text onPress={mutation} style={[buttonStyle, formStyles.login]}>
+              Login
+            </Text>
+          </View>
+        )}
+      </Mutation>
+    </KeyboardAvoidingView>
+  );
+};
+export default LoginForm;
