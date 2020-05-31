@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { formStyles } from "../styles/global";
 import {
   View,
@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($email: String!, $password: String!) {
     login(email: $email, password: $password) {
@@ -22,16 +22,24 @@ const LOGIN_MUTATION = gql`
   }
 `;
 const LoginForm = (props) => {
+  const offWhite = "#fffbf7";
+  const dimOrange = "#c7681a";
+  const [emailLineStyle, setEmailLineStyle] = useState({
+    borderBottomColor: offWhite
+  });
+  const [passLineStyle, setPassLineStyle] = useState({
+    borderBottomColor: offWhite
+  });
   const navigation = useNavigation();
- const { buttonStyle, email, changeInputText, password } = props
+  const { buttonStyle, email, changeInputText, password } = props;
   return (
     <KeyboardAvoidingView
-     behavior={Platform.OS == "ios" ? "padding" : "height"}
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
       style={formStyles.container}
     >
-      <TouchableHighlight onPress={() =>
-        navigation.navigate('Welcome', { name: 'Welcome' })
-      } >
+      <TouchableHighlight
+        onPress={() => navigation.navigate("Welcome", { name: "Welcome" })}
+      >
         <Text
           style={{
             fontSize: 40,
@@ -50,25 +58,31 @@ const LoginForm = (props) => {
         {"\n"}
       </Text>
       <TextInput
-        style={formStyles.input}
+        style={[formStyles.input, emailLineStyle]}
         value={email}
         name="email"
         onChangeText={(e) => changeInputText("email", e)}
         type="text"
         placeholder="Email Address"
+        autoFocus={true}
+        onFocus={()=> setEmailLineStyle({ borderBottomColor: dimOrange})}
+        onEndEditing={()=> setEmailLineStyle({borderBottomColor: offWhite})}
       />
+      {console.log()}
       <Text>
         {"\n"}
         {"\n"}
       </Text>
       <TextInput
-        style={formStyles.input}
+        style={[formStyles.input, passLineStyle]}
         value={password}
         onChangeText={(e) => props.changeInputText("password", e)}
         type="password"
         name="password"
         secureTextEntry={true}
         placeholder="Password"
+        onFocus={() => setPassLineStyle({ borderBottomColor: dimOrange })}
+        onEndEditing={()=> setPassLineStyle({ borderBottomColor: offWhite})}
       />
       <Text style={[formStyles.heading, { fontSize: 16, color: "#c7681a" }]}>
         {"\n"}
