@@ -19,16 +19,16 @@ const httpLink = createHttpLink({
   uri: "http://192.168.0.12:4000",
 });
 
+//Using AsyncStorage for JWT tokens
 const getData = async (AUTH_TOKEN) => {
-  console.log("Step 1 here")
   try {
     const value = await AsyncStorage.getItem(AUTH_TOKEN);
     if (value !== null) {
-      // value previously stored
+      // We have data!!
+      return value;
     }
-  } catch (e) {
-    // error reading value
-    console.log(e, "error occured")
+  } catch (error) {
+    // Error retrieving data
   }
 };
 const SIGNUP_MUTATION = gql`
@@ -53,7 +53,12 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+
 class App extends React.Component {
+  componentDidMount(){
+    token = getData(AUTH_TOKEN).then(data=>console.log("value is", data))
+    //ToDO - Work on Refresh and access tokens for keeping user logged in...
+  }
   state = {
     buttonStyle: { backgroundColor: "#faf6f2", color: "#b5b5b5" },
     login: false,
@@ -115,7 +120,7 @@ class App extends React.Component {
   };
   render() {
     const { signup, success, email, name, password, buttonStyle } = this.state;
-    console.log(this.state)
+
     return (
       <ApolloProvider client={client}>
         <NavigationContainer>
