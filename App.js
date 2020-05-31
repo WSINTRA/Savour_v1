@@ -18,19 +18,9 @@ const Stack = createStackNavigator();
 const httpLink = createHttpLink({
   uri: "http://192.168.0.12:4000",
 });
-const _confirm = async (data) => {
-  const { token } = this.props.login ? data.login : data.signup;
-  this._saveUserData(token, data);
-};
-const _saveUserData = async (token, data) => {
-  try {
-    await AsyncStorage.setItem(AUTH_TOKEN, token)
-  } catch (e) {
-    console.log(e)
-  }
-  this.props.succesful(data);
-};
+
 const getData = async (AUTH_TOKEN) => {
+  console.log("Step 1 here")
   try {
     const value = await AsyncStorage.getItem(AUTH_TOKEN);
     if (value !== null) {
@@ -38,6 +28,7 @@ const getData = async (AUTH_TOKEN) => {
     }
   } catch (e) {
     // error reading value
+    console.log(e, "error occured")
   }
 };
 const SIGNUP_MUTATION = gql`
@@ -48,13 +39,14 @@ const SIGNUP_MUTATION = gql`
   }
 `;
 const authLink = setContext((_, { headers }) => {
-  const token = getData(AUTH_TOKEN);
+  const token = getData(AUTH_TOKEN).then(token=>{
   return {
     headers: {
       ...headers,
       authorization: token ? `Bearer ${token}` : ``,
     },
-  };
+  }
+});
 });
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
@@ -70,6 +62,25 @@ class App extends React.Component {
     password: "",
     name: "",
     success: false,
+    username: ""
+    // succesful: {}
+  };
+
+  _confirm = async (data) => {
+    let token = data.login.token
+    // const { token } = this.state.login ? data.login : data.signup
+    this._saveUserData(token, data);
+  };
+  _saveUserData = async (token, data) => {
+    try {
+      await AsyncStorage.setItem(AUTH_TOKEN, token)
+    } catch (e) {
+      console.log(e)
+    }
+    this.setState({
+      success: true,
+      username: data.login.user.name
+    })
   };
   //Change the style color and form control
   //passes down to login form for input values
@@ -103,11 +114,14 @@ class App extends React.Component {
     });
   };
   render() {
-    const { signup, login, email, name, password, buttonStyle } = this.state;
+    const { signup, success, email, name, password, buttonStyle } = this.state;
+    console.log(this.state)
     return (
       <ApolloProvider client={client}>
         <NavigationContainer>
           <Stack.Navigator>
+            {success ? <Stack.Screen name="test" component={HomeScreen}/> : 
+            <>
             <Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}}/>
             
             <Stack.Screen name="LoginForm" options={{headerShown: false}}>
@@ -116,9 +130,11 @@ class App extends React.Component {
               email={email}
               changeInputText={this.changeTextInput}
               password={password}
-              confirm={_confirm}
+              _confirm={this._confirm}
               />}
-            </Stack.Screen>
+              
+            </Stack.Screen></>}
+            
           </Stack.Navigator>
         </NavigationContainer>
       </ApolloProvider>

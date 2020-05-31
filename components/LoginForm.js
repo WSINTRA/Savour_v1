@@ -22,7 +22,7 @@ const LOGIN_MUTATION = gql`
   }
 `;
 const LoginForm = (props) => {
-  const offWhite = "#fffbf7";
+  const offWhite = "#faf6f2";
   const dimOrange = "#c7681a";
   const [emailLineStyle, setEmailLineStyle] = useState({
     borderBottomColor: offWhite
@@ -31,7 +31,7 @@ const LoginForm = (props) => {
     borderBottomColor: offWhite
   });
   const navigation = useNavigation();
-  const { buttonStyle, email, changeInputText, password } = props;
+  const { buttonStyle, email, changeInputText, password, _confirm } = props;
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -92,7 +92,7 @@ const LoginForm = (props) => {
       <Mutation
         mutation={LOGIN_MUTATION}
         variables={{ email, password }}
-        onCompleted={(data) => confirm(data)}
+        onCompleted={(data) => _confirm(data)}
       >
         {(mutation) => (
           <View style={formStyles.formBound}>
