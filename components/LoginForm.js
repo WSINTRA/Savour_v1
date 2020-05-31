@@ -11,7 +11,6 @@ import {
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import { useNavigation } from '@react-navigation/native';
-
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($email: String!, $password: String!) {
     login(email: $email, password: $password) {
@@ -22,13 +21,12 @@ const LOGIN_MUTATION = gql`
     }
   }
 `;
-
 const LoginForm = (props) => {
   const navigation = useNavigation();
  const { buttonStyle, email, changeInputText, password } = props
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS == "ios" ? "padding" : "height"}
+     behavior={Platform.OS == "ios" ? "padding" : "height"}
       style={formStyles.container}
     >
       <TouchableHighlight onPress={() =>

@@ -110,7 +110,7 @@ class App extends React.Component {
           <Stack.Navigator>
             <Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}}/>
             
-            <Stack.Screen name="LoginForm">
+            <Stack.Screen name="LoginForm" options={{headerShown: false}}>
               {props=> <LoginForm 
               buttonStyle={buttonStyle} 
               email={email}
