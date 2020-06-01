@@ -24,7 +24,7 @@ const SIGNUP_MUTATION = gql`
 function Register(props) {
   const navigation = useNavigation();
   return (
-    <View>
+    <>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
         style={formStyles.container}
@@ -44,8 +44,12 @@ function Register(props) {
           </Text>
         </TouchableHighlight>
         <Text style={formStyles.disclaimer}>ARE YOU 21?</Text>
+        <View style={formStyles.buttonBound}>
+            <Text style={formStyles.disclaimerButton}>NO</Text>
+            <Text style={formStyles.disclaimerButton}>YES</Text>
+        </View>
       </KeyboardAvoidingView>
-    </View>
+    </>
   );
 }
 export default Register;

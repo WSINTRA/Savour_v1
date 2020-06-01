@@ -1,10 +1,9 @@
 import { StyleSheet } from "react-native";
 import { Dimensions } from "react-native";
-
+import {offWhite, dimOrange} from '../colors'
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
-const offWhite = "#fffbf7"
-const dimOrange = "#c7681a"
+
 export const formStyles = StyleSheet.create({
     container: {
       flex: 1,
@@ -16,6 +15,20 @@ export const formStyles = StyleSheet.create({
       textAlign: "center",
       paddingTop:100,
       letterSpacing: 3,
+    },
+    disclaimerButton:{
+      color: dimOrange,
+      marginTop: 50,
+      paddingTop: 10,
+      borderStyle: 'solid',
+      borderColor: dimOrange,
+      borderWidth: 2,
+      backgroundColor: offWhite,
+      alignItems: "center",
+      letterSpacing: 3,
+      width: 110,
+      height: 40,
+      textAlign: "center",
     },
     heading:{
       textAlign: "center",
@@ -41,8 +54,8 @@ export const formStyles = StyleSheet.create({
       backgroundColor: "powderblue",
     },
     buttonBound: {
-      flex: 1,
       flexDirection: "row",
+      justifyContent: "space-around"
     },
     formBound:{
       flex: 1,
