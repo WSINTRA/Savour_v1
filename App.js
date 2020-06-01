@@ -17,6 +17,7 @@ import { View, Text } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 // import gql from "graphql-tag";
 import AsyncStorage from "@react-native-community/async-storage";
+import { dimOrange, buttonGrey, buttonBlack, buttonTextGrey } from "./colors";
 
 const Stack = createStackNavigator();
 
@@ -65,22 +66,26 @@ const client = new ApolloClient({
 // `;
 
 class App extends React.Component {
-  componentDidMount() {
-    try {
-      token = Apollo.getData(AUTH_TOKEN).then((data) =>
-        console.log("value is", data)
-      );
-    } catch {
-      console.log("no token found");
-    }
-    //ToDO - Work on Refresh and access tokens for keeping user logged in...
-    //https://www.richardkotze.com/coding/send-jwt-client-apollo-graphql <- Looks worth a read
-  }
+  // componentDidMount() {
+  //   try {
+  //     token = Apollo.getData(AUTH_TOKEN).then((data) =>
+  //       console.log("value is", data)
+  //     );
+  //   } catch {
+  //     console.log("no token found");
+  //   }
+  //   //ToDO - Work on Refresh and access tokens for keeping user logged in...
+  //   //https://www.richardkotze.com/coding/send-jwt-client-apollo-graphql <- Looks worth a read
+  // }
   state = {
-    buttonStyle: { backgroundColor: "#faf6f2", color: "#b5b5b5" },
+    buttonStyle: { backgroundColor: buttonGrey, color: buttonTextGrey },
     email: "",
     password: "",
-    name: "",
+    firstName: "",
+    lastName: "",
+    confirmPass: "",
+    PromoCode: "",
+    zipCode: "",
     //keep this as true during dev if you don't want to keep loggin in
     success: false,
     username: "",
@@ -90,8 +95,20 @@ class App extends React.Component {
     changeTextInput: (property, value) => {
       this.setState({
         [property]: value,
-      })},
+      });
+      if (this.state.zipCode.length > 3){
+        this.setState({
+          buttonStyle: { backgroundColor: dimOrange, color: buttonBlack },
+        })
+      }
+        else if (this.state.zipCode.length < 1) {
+          this.setState({
+            buttonStyle: { backgroundColor: buttonGrey, color: buttonTextGrey },
+          });
+      }
+    },
       //This should only be called by MUTATION
+
     _confirm: (data)=>this.LoginFormFunctions._confirm(data)
   };
 
@@ -103,11 +120,11 @@ class App extends React.Component {
       });
       if (this.state.email.length > 1 && this.state.password.length > 1) {
         this.setState({
-          buttonStyle: { backgroundColor: "#c7681a", color: "#1c1c1c" },
+          buttonStyle: { backgroundColor: dimOrange, color: buttonBlack },
         });
       } else if (this.state.email.length < 1) {
         this.setState({
-          buttonStyle: { backgroundColor: "#faf6f2", color: "#b5b5b5" },
+          buttonStyle: { backgroundColor: buttonGrey, color: buttonTextGrey },
         });
       }
     },
@@ -131,7 +148,7 @@ class App extends React.Component {
     },
   };
   render() {
-    const { name, success, email, password, buttonStyle } = this.state;
+    const { zipCode, name, success, email, password, buttonStyle } = this.state;
 
     return (
       <ApolloProvider client={client}>
@@ -147,7 +164,15 @@ class App extends React.Component {
                   options={{ headerShown: false }}
                 />
                 <Stack.Screen name="Disclaimer" component={Disclaimer} options={{ headerShown: false }}/> 
-                <Stack.Screen name="ZipConfirm" component={ZipConfirm} options={{ headerShown: false }}/> 
+                <Stack.Screen name="ZipConfirm" options={{ headerShown: false }}>
+                {(props) => (
+                    <ZipConfirm
+                      buttonStyle={buttonStyle}
+                      zipCode={zipCode}
+                      changeInputText={this.RegisterFormFunctions.changeTextInput}
+                    />
+                  )}
+                </Stack.Screen> 
                 
                 <Stack.Screen name="LoginForm" options={{ headerShown: false }}>
                   {(props) => (

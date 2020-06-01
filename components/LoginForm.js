@@ -69,7 +69,7 @@ const LoginForm = (props) => {
         onFocus={()=> setEmailLineStyle({ borderBottomColor: dimOrange})}
         onEndEditing={()=> setEmailLineStyle({borderBottomColor: offWhite})}
       />
-      {console.log()}
+      
       <Text>
         {"\n"}
         {"\n"}

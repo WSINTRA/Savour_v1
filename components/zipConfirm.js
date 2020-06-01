@@ -7,11 +7,12 @@ import {
   TouchableHighlight,
   KeyboardAvoidingView,
   Platform,
-  TextInput
+  TextInput,
 } from "react-native";
 import { offWhite, dimOrange } from "../colors";
 
-function zipConfirm() {
+function zipConfirm(props) {
+  const { zipCode, buttonStyle, changeInputText } = props;
   const [lineStyle, setlineStyle] = useState({
     borderBottomColor: offWhite,
   });
@@ -38,19 +39,31 @@ function zipConfirm() {
             &#60;
           </Text>
         </TouchableHighlight>
-        <Text style={[formStyles.zipForm, {fontSize:15}]}>WHAT'S YOUR ZIP CODE?</Text>
-        <Text style={{ fontSize: 10, textAlign: 'center' }}>
+        <Text style={[formStyles.zipForm, { fontSize: 15 }]}>
+          WHAT'S YOUR ZIP CODE?
+        </Text>
+        <Text style={{ fontSize: 10, textAlign: "center" }}>
           We'll get you the beers you can't get in your area
         </Text>
         <TextInput
-          style={[formStyles.input, lineStyle, {textAlign:'center',marginTop:40}]}
+          keyboardType={"numeric"}
+          style={[
+            formStyles.input,
+            lineStyle,
+            { textAlign: "center", marginTop: 40 },
+          ]}
+          value={zipCode}
           name="zip"
           type="text"
           placeholder="Zip Code"
+          onChangeText={(e) => changeInputText("zipCode", e)}
           autoFocus={true}
           onFocus={() => setlineStyle({ borderBottomColor: dimOrange })}
           onEndEditing={() => setlineStyle({ borderBottomColor: offWhite })}
         />
+        <View style={formStyles.formBound}>
+          <Text style={[buttonStyle, formStyles.login]}>CONTINUE</Text>
+        </View>
       </KeyboardAvoidingView>
     </>
   );
