@@ -12,6 +12,11 @@ export const formStyles = StyleSheet.create({
       margin: 0,
       backgroundColor: offWhite
     },
+    disclaimer:{
+      textAlign: "center",
+      paddingTop:100,
+      letterSpacing: 3,
+    },
     heading:{
       textAlign: "center",
       letterSpacing: 3,
