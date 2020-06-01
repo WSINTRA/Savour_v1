@@ -45,13 +45,12 @@ const Apollo = {
       };
     });
   }),
-
-  client : new ApolloClient({
-    link: Apollo.authLink.concat(Apollo.httpLink),
-    cache: new InMemoryCache(),
-  })
 };
 
+const client = new ApolloClient({
+  link: Apollo.authLink.concat(Apollo.httpLink),
+  cache: new InMemoryCache(),
+});
 
 //Saving this for register form page
 // const SIGNUP_MUTATION = gql`
@@ -87,7 +86,7 @@ class App extends React.Component {
     // succesful: {}
   };
 
- //Keep all LoginForm functioncality inside the LoginFormFunctions namespace
+ 
   LoginFormFunctions = {
   //Change the style color and form control
   changeTextInput : (property, value) => {
@@ -126,7 +125,7 @@ class App extends React.Component {
     const { success, email, password, buttonStyle } = this.state;
 
     return (
-      <ApolloProvider client={Apollo.client}>
+      <ApolloProvider client={client}>
         <NavigationContainer>
           <Stack.Navigator>
             {success ? (
