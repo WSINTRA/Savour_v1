@@ -16,6 +16,11 @@ export const formStyles = StyleSheet.create({
       paddingTop:100,
       letterSpacing: 3,
     },
+    zipForm:{
+        textAlign: "center",
+        paddingTop:100,
+        letterSpacing: 1,
+    },
     disclaimerButton:{
       color: dimOrange,
       marginTop: 50,

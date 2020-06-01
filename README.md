@@ -4,6 +4,7 @@
 **We have no intention of commercializing this app at this point, we simply want to show our enthusiasm for another React Native Product with a similar name (and maybe become contenders for a position on their team).**
 
 <h5>
+<h4>FOR CONTRIBUTER INSTRUCTIONS SEE - contributions.md</h4>
 <br>
 <ul>
 
