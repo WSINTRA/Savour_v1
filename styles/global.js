@@ -3,12 +3,14 @@ import { Dimensions } from "react-native";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
-
+const offWhite = "#fffbf7"
+const dimOrange = "#c7681a"
 export const formStyles = StyleSheet.create({
     container: {
       flex: 1,
       flexDirection: "column",
-      margin: 0
+      margin: 0,
+      backgroundColor: offWhite
     },
     heading:{
       textAlign: "center",
@@ -22,10 +24,9 @@ export const formStyles = StyleSheet.create({
       height:30,
       fontSize:18,
       borderStyle: 'solid',
-      borderTopColor:'#fff',
-      borderRightColor: "#fff",
-      borderLeftColor: "#fff",
-      borderBottomColor: '#d9e6f2',
+      borderTopColor: offWhite,
+      borderRightColor: offWhite,
+      borderLeftColor: offWhite,
       borderWidth: 2,
     },
     imageBound: {
@@ -69,7 +70,7 @@ export const formStyles = StyleSheet.create({
     signUpButton: {
       width: windowWidth / 2,
       height: 60,
-      backgroundColor: "#c7681a",
+      backgroundColor: dimOrange,
       color: '#1c1c1c',
       textAlign: "center",
       paddingTop:15,
