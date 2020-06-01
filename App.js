@@ -11,7 +11,7 @@ import { AUTH_TOKEN } from "./constants";
  *  - First: Import them into components.js
  *  - Then: add them to the import statement below
  */
-import { Register, LoginForm, Welcome } from "./components";
+import { Disclaimer, LoginForm, Welcome, ZipConfirm } from "./components";
 import { NavigationContainer } from "@react-navigation/native";
 import { View, Text } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -146,18 +146,9 @@ class App extends React.Component {
                   component={Welcome}
                   options={{ headerShown: false }}
                 />
-                <Stack.Screen name="RegisterForm" options={{ headerShown: false }}> 
-                {(props) => (
-                    <Register
-                      buttonStyle={buttonStyle}
-                      email={email}
-                      name={name}
-                      changeInputText={this.RegisterFormFunctions.changeTextInput}
-                      password={password}
-                      _confirm={this.RegisterFormFunctions._confirm}
-                    />
-                  )}
-                </Stack.Screen>
+                <Stack.Screen name="Disclaimer" component={Disclaimer} options={{ headerShown: false }}/> 
+                <Stack.Screen name="ZipConfirm" component={ZipConfirm} options={{ headerShown: false }}/> 
+                
                 <Stack.Screen name="LoginForm" options={{ headerShown: false }}>
                   {(props) => (
                     <LoginForm
