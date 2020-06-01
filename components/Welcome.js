@@ -17,7 +17,10 @@ const Welcome = ({ navigation }) => {
         style={formStyles.imageBound}
       ></ImageBackground>
       <View style={formStyles.buttonBound}>
-        <TouchableHighlight>
+        <TouchableHighlight
+        onPress={() =>
+          navigation.navigate('RegisterForm', { name: 'RegisterForm' })
+        }>
           <Text style={[formStyles.signUpButton, { color: "whitesmoke" }]}>
             SIGN UP
           </Text>
