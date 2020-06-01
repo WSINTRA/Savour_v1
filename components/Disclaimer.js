@@ -6,11 +6,9 @@ import {
   TouchableHighlight,
   KeyboardAvoidingView,
   Platform,
-} from "react-native";
-import { Mutation } from "react-apollo";
+} from "react-native"
 import gql from "graphql-tag";
-import { useNavigation } from "@react-navigation/native";
-import { offWhite, dimOrange } from "../colors";
+
 //Saving this for register form page
 const SIGNUP_MUTATION = gql`
   mutation SignupMutation($email: String!, $password: String!, $name: String!) {
@@ -20,8 +18,7 @@ const SIGNUP_MUTATION = gql`
   }
 `;
 
-function Disclaimer(props) {
-  const navigation = useNavigation();
+function Disclaimer({navigation}) {
   return (
     <>
       <KeyboardAvoidingView
@@ -53,7 +50,7 @@ function Disclaimer(props) {
           <Text
             style={formStyles.disclaimerButton}
             onPress={() =>
-              navigation.navigate("LoginForm", { name: "LoginForm" })
+              navigation.navigate("ZipConfirm", { name: "ZipConfirm" })
             }
           >
             YES
