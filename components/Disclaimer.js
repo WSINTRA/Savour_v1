@@ -4,7 +4,6 @@ import {
   View,
   Text,
   TouchableHighlight,
-  TextInput,
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
@@ -21,7 +20,7 @@ const SIGNUP_MUTATION = gql`
   }
 `;
 
-function Register(props) {
+function Disclaimer(props) {
   const navigation = useNavigation();
   return (
     <>
@@ -45,11 +44,23 @@ function Register(props) {
         </TouchableHighlight>
         <Text style={formStyles.disclaimer}>ARE YOU 21?</Text>
         <View style={formStyles.buttonBound}>
-            <Text style={formStyles.disclaimerButton}>NO</Text>
-            <Text style={formStyles.disclaimerButton}>YES</Text>
+          <Text
+            style={formStyles.disclaimerButton}
+            onPress={() => navigation.navigate("Welcome", { name: "Welcome" })}
+          >
+            NO
+          </Text>
+          <Text
+            style={formStyles.disclaimerButton}
+            onPress={() =>
+              navigation.navigate("LoginForm", { name: "LoginForm" })
+            }
+          >
+            YES
+          </Text>
         </View>
       </KeyboardAvoidingView>
     </>
   );
 }
-export default Register;
+export default Disclaimer;
