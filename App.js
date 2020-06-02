@@ -14,6 +14,7 @@ import { AUTH_TOKEN } from "./constants";
 import { Disclaimer, LoginForm, Welcome, ZipConfirm } from "./components";
 //Wraps the app so that a navigation object can be used for screen navigations
 import { NavigationContainer } from "@react-navigation/native";
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from "@react-navigation/stack";
 
 import { View, Text } from "react-native";
@@ -24,6 +25,9 @@ import { dimOrange, buttonGrey, buttonBlack, buttonTextGrey } from "./colors";
 
 //This stack is used in the NavigationContainers
 const Stack = createStackNavigator();
+// Drawer for Drawer Navigator
+const Drawer = createDrawerNavigator();
+
 
 //Apollo created as a nameSpace for all functionality of Apollo
 const Apollo = {
@@ -103,10 +107,12 @@ class App extends React.Component {
      * the conditional for highlighting the button color
      * so we point the changeText from RegisterForm to the changeText inside LoginFormFunction adhering to DRY
      */
-    changeTextInput: (property, value)=> { this.LoginFormFunctions.changeTextInput(property, value);
+    changeTextInput: (property, value, success)=> { this.LoginFormFunctions.changeTextInput(property, value);
       if (this.state.zipCode.length > 3) {
         this.setState({
           buttonStyle: { backgroundColor: dimOrange, color: buttonBlack },
+          //set success to true so I can work on navDrawer
+          success: true
         });
       } else if (this.state.zipCode.length < 1) {
         this.setState({
