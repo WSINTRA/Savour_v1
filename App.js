@@ -17,6 +17,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import { View, Text } from "react-native";
+import Icofont from 'react-icofont';
 
 // import gql from "graphql-tag";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -92,7 +93,8 @@ class App extends React.Component {
     PromoCode: "",
     zipCode: "",
     //keep this as true during dev if you don't want to keep loggin in
-    success: false,
+    success: true,
+    // success: false,
     username: "",
   };
 
@@ -160,9 +162,12 @@ class App extends React.Component {
     return (
       <ApolloProvider client={client}>
         <NavigationContainer>
-          <Stack.Navigator>
+          <Stack.Navigator initialRouteName="Welcome">
             {success ? (
-              <Stack.Screen name="test" component={HomeScreen} />
+              <Stack.Screen name="test" component={HomeScreen} 
+              options={{
+                headerTitle: props => <MainTitle {...props} />,
+                }} />
             ) : (
               <>
                 <Stack.Screen
@@ -214,6 +219,21 @@ function HomeScreen() {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Home Screen</Text>
+    </View>
+  );
+}
+function MainTitle() {
+  return (
+    <View style={{flex: 1, flexDirection: "row", justifyContent: "space-between"}}>
+      <Icofont icon="icofont-gear" size="2"/>
+      <Text style={
+        {         display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+                  textAlign: 'center',
+                  letterSpacing: 3,}}>CURRENT BEERS</Text>
+      {/* change this true to be some kind of notification variable */}
+      {true ? <Icofont icon="icofont-alarm" size="2"/> : <Icofont icon="icofont-notification" size="2" />}
     </View>
   );
 }

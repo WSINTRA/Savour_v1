@@ -39,7 +39,7 @@ const LoginForm = (props) => {
       style={formStyles.container}
     >
       <TouchableHighlight
-        onPress={() => navigation.navigate("Welcome", { name: "Welcome" })}
+       onPress={() => navigation.goBack()}
       >
         <Text
           style={{
