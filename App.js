@@ -12,13 +12,17 @@ import { AUTH_TOKEN } from "./constants";
  *  - Then: add them to the import statement below
  */
 import { Disclaimer, LoginForm, Welcome, ZipConfirm } from "./components";
+//Wraps the app so that a navigation object can be used for screen navigations
 import { NavigationContainer } from "@react-navigation/native";
-import { View, Text } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
+
+import { View, Text } from "react-native";
+
 // import gql from "graphql-tag";
 import AsyncStorage from "@react-native-community/async-storage";
 import { dimOrange, buttonGrey, buttonBlack, buttonTextGrey } from "./colors";
 
+//This stack is used in the NavigationContainers
 const Stack = createStackNavigator();
 
 //Apollo created as a nameSpace for all functionality of Apollo
@@ -50,7 +54,7 @@ const Apollo = {
     });
   }),
 };
-
+//this client is passed into the Apollo App wrapper
 const client = new ApolloClient({
   link: Apollo.authLink.concat(Apollo.httpLink),
   cache: new InMemoryCache(),
@@ -77,6 +81,7 @@ class App extends React.Component {
   //   //ToDO - Work on Refresh and access tokens for keeping user logged in...
   //   //https://www.richardkotze.com/coding/send-jwt-client-apollo-graphql <- Looks worth a read
   // }
+
   state = {
     buttonStyle: { backgroundColor: buttonGrey, color: buttonTextGrey },
     email: "",
@@ -91,27 +96,30 @@ class App extends React.Component {
     username: "",
   };
 
+  //nameSpace created for Register functionality
   RegisterFormFunctions = {
-    changeTextInput: (property, value) => {
-      this.setState({
-        [property]: value,
-      });
-      if (this.state.zipCode.length > 3){
+    /**
+     * changeTextInput is exact same function used in LoginFormFunction the only difference in the logic is
+     * the conditional for highlighting the button color
+     * so we point the changeText from RegisterForm to the changeText inside LoginFormFunction adhering to DRY
+     */
+    changeTextInput: (property, value)=> { this.LoginFormFunctions.changeTextInput(property, value);
+      if (this.state.zipCode.length > 3) {
         this.setState({
           buttonStyle: { backgroundColor: dimOrange, color: buttonBlack },
-        })
-      }
-        else if (this.state.zipCode.length < 1) {
-          this.setState({
-            buttonStyle: { backgroundColor: buttonGrey, color: buttonTextGrey },
-          });
+        });
+      } else if (this.state.zipCode.length < 1) {
+        this.setState({
+          buttonStyle: { backgroundColor: buttonGrey, color: buttonTextGrey },
+        });
       }
     },
-      //This should only be called by MUTATION
+    //This should only be called by MUTATION
 
-    _confirm: (data)=>this.LoginFormFunctions._confirm(data)
+    _confirm: (data) => this.LoginFormFunctions._confirm(data),
   };
 
+  //nameSpace created for loginForm functionality
   LoginFormFunctions = {
     //Change the style color and form control
     changeTextInput: (property, value) => {
@@ -132,7 +140,6 @@ class App extends React.Component {
     _confirm: async (data) => {
       // console.log(data)
       let token = data.login.token;
-      // const { token } = this.state.login ? data.login : data.signup
       this.LoginFormFunctions._saveUserData(token, data);
     },
     _saveUserData: async (token, data) => {
@@ -163,17 +170,26 @@ class App extends React.Component {
                   component={Welcome}
                   options={{ headerShown: false }}
                 />
-                <Stack.Screen name="Disclaimer" component={Disclaimer} options={{ headerShown: false }}/> 
-                <Stack.Screen name="ZipConfirm" options={{ headerShown: false }}>
-                {(props) => (
+                <Stack.Screen
+                  name="Disclaimer"
+                  component={Disclaimer}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="ZipConfirm"
+                  options={{ headerShown: false }}
+                >
+                  {(props) => (
                     <ZipConfirm
                       buttonStyle={buttonStyle}
                       zipCode={zipCode}
-                      changeInputText={this.RegisterFormFunctions.changeTextInput}
+                      changeInputText={
+                        this.RegisterFormFunctions.changeTextInput
+                      }
                     />
                   )}
-                </Stack.Screen> 
-                
+                </Stack.Screen>
+
                 <Stack.Screen name="LoginForm" options={{ headerShown: false }}>
                   {(props) => (
                     <LoginForm
