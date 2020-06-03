@@ -15,7 +15,7 @@ import { Disclaimer, LoginForm, Welcome, ZipConfirm, MainTitle } from "./compone
 //Wraps the app so that a navigation object can be used for screen navigations
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, Button } from "react-native";
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -26,6 +26,7 @@ import { dimOrange, buttonGrey, buttonBlack, buttonTextGrey } from "./colors";
 //This stack is used in the NavigationContainers
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
 //Apollo created as a nameSpace for all functionality of Apollo
 const Apollo = {
@@ -163,16 +164,18 @@ class App extends React.Component {
 
     return (
       <ApolloProvider client={client}>
+       
         {success ? (
           <NavigationContainer>
+            
             <Drawer.Navigator>
-              
               <Drawer.Screen name="Home" component={HomeScreen} />
               <Drawer.Screen
                 name="Notifications"
                 component={NotificationsScreen}
               />
             </Drawer.Navigator>
+            
           </NavigationContainer>
         ) : (
           <>
@@ -225,16 +228,20 @@ class App extends React.Component {
 //Only exists for development stage, notice MainTitle is always at the top of any component, 
 function HomeScreen({ navigation }) {
   return (
-    <>
+    <Tab.Navigator>
+    <Tab.Screen name="Feed" component={NotificationsScreen} />
+    <Tab.Screen name="Messages" component={Disclaimer} />
+  </Tab.Navigator>
+  );
+}
+/** <>
+    
       <MainTitle />
       <View style={{ flex: 1, alignItems: "center" }}>
       <Text style={{alignSelf: "center",}}>Home Screen</Text>
     </View>
     </>
-  );
-}
-
-
+     */
 //ONly Exists for Developement stage
 function NotificationsScreen({ navigation }) {
   return (

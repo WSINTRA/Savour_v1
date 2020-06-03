@@ -1,16 +1,17 @@
-import { mainStyles } from './styles/global'
+import React from "react";
+import { mainStyles } from '../styles/global'
 import { View, Text, } from "react-native";
 import Icofont from "react-icofont";
 import { useNavigation } from "@react-navigation/native";
-
-export default function MainTitle() {
+import { buttonBlack, dimOrange } from '../colors';
+export default function MainTitle(props) {
   const navigation = useNavigation();
   return (
     <View
       style={mainStyles.mainTitle}
     >
       <Text onPress={() => navigation.openDrawer()}>
-        <Icofont icon="icofont-gear" size="2" />
+        <Icofont style={{color: buttonBlack}}  icon="icofont-gear" size="2" />
       </Text>
       <Text
         style={{
@@ -21,12 +22,13 @@ export default function MainTitle() {
           letterSpacing: 3,
         }}
       >
-        CURRENT BEERS
+        {props.headingTitle}
+       
       </Text>
       <Text>
       {/* change this true to be some kind of notification variable */}
       {true ? (
-        <Icofont icon="icofont-alarm" size="2" />
+        <Icofont style={{color: buttonBlack}}  icon="icofont-alarm" size="2" />
       ) : (
         <Icofont
           style={{ color: dimOrange }}
