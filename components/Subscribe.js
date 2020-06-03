@@ -5,7 +5,7 @@ import { View, Text } from "react-native";
 function Subscribe() {
 return (
     <>
-    <MainTitle headingTitle={"SUBSCRIBE"}/>
+    <MainTitle headingTitle={"SUBSCRIBE"} rightIcon={"alert-circle-outline"}/>
     <View><Text>This is where Your Subscribe comp will go</Text></View>
     </>
 )

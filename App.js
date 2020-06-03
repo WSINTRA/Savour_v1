@@ -159,12 +159,21 @@ class App extends React.Component {
   };
   render() {
     const { zipCode, name, success, email, password, buttonStyle } = this.state;
-
+    const MyTheme = {
+      dark: false,
+      colors: {
+        primary: buttonBlack,
+        background: 'rgb(242, 242, 242)',
+        card: 'rgb(255, 255, 255)',
+        text: buttonGrey,
+        border: 'rgb(199, 199, 204)',
+      },
+    };
     return (
       <ApolloProvider client={client}>
        <>
         {success ? (
-          <NavigationContainer>
+          <NavigationContainer theme={MyTheme}>
             
             <Drawer.Navigator>
               <Drawer.Screen name="Home" component={HomeScreen} />
