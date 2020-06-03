@@ -6,7 +6,7 @@ import {
   TouchableHighlight,
   KeyboardAvoidingView,
   Platform,
-} from "react-native"
+} from "react-native";
 import gql from "graphql-tag";
 
 //Saving this for register form page
@@ -18,16 +18,14 @@ const SIGNUP_MUTATION = gql`
   }
 `;
 
-function Disclaimer({navigation}) {
+function Disclaimer({ navigation }) {
   return (
     <>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
         style={formStyles.container}
       >
-        <TouchableHighlight
-          onPress={() => navigation.navigate("Welcome", { name: "Welcome" })}
-        >
+        <TouchableHighlight onPress={() => navigation.goBack()}>
           <Text
             style={{
               fontSize: 40,
@@ -43,14 +41,14 @@ function Disclaimer({navigation}) {
         <View style={formStyles.buttonBound}>
           <Text
             style={formStyles.disclaimerButton}
-            onPress={() => navigation.navigate("Welcome", { name: "Welcome" })}
+            onPress={() => navigation.goBack()}
           >
             NO
           </Text>
           <Text
             style={formStyles.disclaimerButton}
             onPress={() =>
-              navigation.navigate("ZipConfirm", { name: "ZipConfirm" })
+              navigation.push("ZipConfirm")
             }
           >
             YES

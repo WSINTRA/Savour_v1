@@ -11,19 +11,21 @@ import { AUTH_TOKEN } from "./constants";
  *  - First: Import them into components.js
  *  - Then: add them to the import statement below
  */
-import { Disclaimer, LoginForm, Welcome, ZipConfirm } from "./components";
+import { Disclaimer, LoginForm, Welcome, ZipConfirm, MainTitle } from "./components";
 //Wraps the app so that a navigation object can be used for screen navigations
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import { View, Text } from "react-native";
+import { View, Text, Button } from "react-native";
 
+import { createDrawerNavigator } from "@react-navigation/drawer";
 // import gql from "graphql-tag";
 import AsyncStorage from "@react-native-community/async-storage";
 import { dimOrange, buttonGrey, buttonBlack, buttonTextGrey } from "./colors";
 
 //This stack is used in the NavigationContainers
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
 //Apollo created as a nameSpace for all functionality of Apollo
 const Apollo = {
@@ -92,7 +94,8 @@ class App extends React.Component {
     PromoCode: "",
     zipCode: "",
     //keep this as true during dev if you don't want to keep loggin in
-    success: false,
+    success: true,
+    // success: false,
     username: "",
   };
 
@@ -103,7 +106,8 @@ class App extends React.Component {
      * the conditional for highlighting the button color
      * so we point the changeText from RegisterForm to the changeText inside LoginFormFunction adhering to DRY
      */
-    changeTextInput: (property, value)=> { this.LoginFormFunctions.changeTextInput(property, value);
+    changeTextInput: (property, value) => {
+      this.LoginFormFunctions.changeTextInput(property, value);
       if (this.state.zipCode.length > 3) {
         this.setState({
           buttonStyle: { backgroundColor: dimOrange, color: buttonBlack },
@@ -159,12 +163,21 @@ class App extends React.Component {
 
     return (
       <ApolloProvider client={client}>
-        <NavigationContainer>
-          <Stack.Navigator>
-            {success ? (
-              <Stack.Screen name="test" component={HomeScreen} />
-            ) : (
-              <>
+        {success ? (
+          <NavigationContainer>
+            <Drawer.Navigator>
+              
+              <Drawer.Screen name="Home" component={HomeScreen} />
+              <Drawer.Screen
+                name="Notifications"
+                component={NotificationsScreen}
+              />
+            </Drawer.Navigator>
+          </NavigationContainer>
+        ) : (
+          <>
+            <NavigationContainer>
+              <Stack.Navigator initialRouteName="Welcome">
                 <Stack.Screen
                   name="Welcome"
                   component={Welcome}
@@ -201,20 +214,36 @@ class App extends React.Component {
                     />
                   )}
                 </Stack.Screen>
-              </>
-            )}
-          </Stack.Navigator>
-        </NavigationContainer>
+              </Stack.Navigator>
+            </NavigationContainer>
+          </>
+        )}
       </ApolloProvider>
     );
   }
 }
-//Only exists for development stage
-function HomeScreen() {
+//Only exists for development stage, notice MainTitle is always at the top of any component, 
+function HomeScreen({ navigation }) {
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Home Screen</Text>
+    <>
+      <MainTitle />
+      <View style={{ flex: 1, alignItems: "center" }}>
+      <Text style={{alignSelf: "center",}}>Home Screen</Text>
     </View>
+    </>
+  );
+}
+
+
+//ONly Exists for Developement stage
+function NotificationsScreen({ navigation }) {
+  return (
+    <>
+      <MainTitle />
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Button onPress={() => navigation.goBack()} title="Go back home" />
+    </View>
+    </>
   );
 }
 

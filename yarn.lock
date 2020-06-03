@@ -1230,6 +1230,14 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.6.tgz#c7f2ac187c1f25aa8c30d11baa8f4398eca3bb84"
   integrity sha512-PpMoeXwPUoldCRKDuSi+zK5rT+sJTW6ri6RdGPkSKRzU77Q1d9IaR0O5IKvBj0XSdL3p+dcOa05gk35aGDffBQ==
 
+"@react-navigation/bottom-tabs@^5.5.1":
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/@react-navigation/bottom-tabs/-/bottom-tabs-5.5.1.tgz#f1f15ea70e4b397de6f8acafe70a694de08c87b6"
+  integrity sha512-zSv0YD46tEH8RM4sgzpQ/bnV5dAr4bSul52PVY9e2Rc9f3lg5D2tmmPFsN0txWbpImHJcRKZdpAhcc61C+lBVA==
+  dependencies:
+    color "^3.1.2"
+    react-native-iphone-x-helper "^1.2.1"
+
 "@react-navigation/core@^3.7.6":
   version "3.7.6"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-3.7.6.tgz#e0244fcdc22937825b252197f70308bbe5709c58"
@@ -1251,6 +1259,14 @@
     query-string "^6.12.1"
     react-is "^16.13.0"
     use-subscription "^1.4.0"
+
+"@react-navigation/drawer@^5.8.1":
+  version "5.8.1"
+  resolved "https://registry.yarnpkg.com/@react-navigation/drawer/-/drawer-5.8.1.tgz#6679f309f2758920f17cca3aa253fc7b3fc0c85a"
+  integrity sha512-V8hu0T9ckHRt3oAsAw4TTTu3D7FD+QNqFU8EcwbOPvOouXzCB8QyKQKjvQHYYlf5NRWTLUEeWMlA/i/NQgESJg==
+  dependencies:
+    color "^3.1.2"
+    react-native-iphone-x-helper "^1.2.1"
 
 "@react-navigation/native@^3.7.13":
   version "3.7.13"
@@ -4623,6 +4639,11 @@ react-dom@~16.9.0:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
     scheduler "^0.15.0"
+
+react-icofont@^1.0.19:
+  version "1.0.19"
+  resolved "https://registry.yarnpkg.com/react-icofont/-/react-icofont-1.0.19.tgz#bc43d148f9a14d170b6004cc6338db7366566e56"
+  integrity sha512-vuTiPDJ5nKJsiWcMk6GO6VyYMKR9E+T0V8a1J6ncU+iPxy9ht+nXiP6JbmPy155oazbGR/VmqzBDwKpRJP4oIQ==
 
 react-is@^16.12.0, react-is@^16.13.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   version "16.13.1"

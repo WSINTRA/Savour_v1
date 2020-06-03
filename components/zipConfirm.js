@@ -24,9 +24,7 @@ function zipConfirm(props) {
         style={formStyles.container}
       >
         <TouchableHighlight
-          onPress={() =>
-            navigation.navigate("Disclaimer", { name: "Disclaimer" })
-          }
+        onPress={() => navigation.goBack()}
         >
           <Text
             style={{
