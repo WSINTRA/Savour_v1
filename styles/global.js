@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Dimensions } from "react-native";
-import { offWhite, dimOrange, buttonGrey } from "../colors";
+import { offWhite, dimOrange, buttonGrey, borderGrey, buttonBlack } from "../colors";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
@@ -14,13 +14,54 @@ export const mainStyles = StyleSheet.create({
     borderTopColor: offWhite,
     borderRightColor: offWhite,
     borderLeftColor: offWhite,
-    borderBottomColor: buttonGrey,
+    
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
     height: 60,
     width: windowWidth,
     backgroundColor: offWhite,
+  },
+})
+
+export const registerStyle = StyleSheet.create({
+  header: {
+    textAlign: "center",
+    marginTop: 30,
+  },
+  row1:{
+    flexDirection:"row",
+    marginTop: 50,
+    justifyContent: "space-around"
+   },
+   nameInput:{
+    width: (windowWidth/2- 40),
+    borderStyle: "solid",
+    borderBottomColor: borderGrey,
+    borderTopColor: offWhite,
+    borderRightColor: offWhite,
+    borderLeftColor: offWhite,
+    borderWidth: 1,
+    paddingBottom: 20,
+    fontSize: 18,
+   },
+   input: {
+    width: (windowWidth -60),
+    paddingBottom: 20,
+    fontSize: 18,
+    borderStyle: "solid",
+    borderBottomColor: borderGrey,
+    borderTopColor: offWhite,
+    borderRightColor: offWhite,
+    borderLeftColor: offWhite,
+    borderWidth: 1,
+   },
+  row2:{
+    marginTop:50,
+    marginLeft: 25,
+    marginRight: 25,
+    flexDirection:"row",
+    justifyContent: "flex-start"
   },
 })
 export const formStyles = StyleSheet.create({
@@ -100,7 +141,7 @@ export const formStyles = StyleSheet.create({
   loginButton: {
     width: windowWidth / 2,
     height: 80,
-    backgroundColor: "#faf6f2",
+    backgroundColor: buttonGrey,
     textAlign: "center",
     paddingTop: 15,
     fontSize: 16,

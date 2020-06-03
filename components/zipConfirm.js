@@ -12,7 +12,7 @@ import {
 import { offWhite, dimOrange } from "../colors";
 
 function zipConfirm(props) {
-  const { zipCode, buttonStyle, changeInputText } = props;
+  const { zipCode, buttonStyle, changeInputText, changeButtonStyle } = props;
   const [lineStyle, setlineStyle] = useState({
     borderBottomColor: offWhite,
   });
@@ -60,7 +60,8 @@ function zipConfirm(props) {
           onEndEditing={() => setlineStyle({ borderBottomColor: offWhite })}
         />
         <View style={formStyles.formBound}>
-          <Text style={[buttonStyle, formStyles.login]}>CONTINUE</Text>
+          <Text style={[buttonStyle, formStyles.login]}
+          onPress={()=> {changeButtonStyle();navigation.push("CreateAccnt")}  } >CONTINUE</Text>
         </View>
       </KeyboardAvoidingView>
     </>

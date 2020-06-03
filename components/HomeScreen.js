@@ -1,9 +1,9 @@
 import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { CurrentBeers, YourCrates, Subscribe, MyBeers } from "../components";
-// import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { buttonBlack, dimOrange } from "../colors";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { buttonBlack } from "../colors";
+
 function HomeScreen() {
   const Tab = createBottomTabNavigator();
   const iconSize = 32;
@@ -12,8 +12,6 @@ function HomeScreen() {
       initialRouteName="Current Beers"
       activeColor={buttonBlack}
       labelStyle={{ fontSize: 12 }}
-      style={{ backgroundColor: 'tomato' }}
-     
       tabBarOptions={{
         showLabel: false,
       }}
@@ -24,7 +22,10 @@ function HomeScreen() {
         options={{
           tabBarLabel: "Current Beers",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={iconSize} />
+            <MaterialCommunityIcons 
+            name="home" 
+            color={color} 
+            size={iconSize} />
           ),
         }}
       />
@@ -33,10 +34,9 @@ function HomeScreen() {
         component={YourCrates}
         options={{
           tabBarLabel: "Your Crates",
-          tabBarIcon: ({color}) => (
+          tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
-            color={color}
-              
+              color={color}
               name="cube-outline"
               size={iconSize}
             />
@@ -48,10 +48,9 @@ function HomeScreen() {
         component={Subscribe}
         options={{
           tabBarLabel: "Subscribe",
-          tabBarIcon: ({color}) => (
+          tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
-            color={color}
-              
+              color={color}
               name="autorenew"
               size={iconSize}
             />
@@ -63,13 +62,11 @@ function HomeScreen() {
         component={MyBeers}
         options={{
           tabBarLabel: "My Beers",
-          tabBarIcon: ({color}) => (
-            <MaterialCommunityIcons
-            color={color}
-             
-              name="star"
-              size={iconSize}
-            />
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons 
+            color={color} 
+            name="star" 
+            size={iconSize} />
           ),
         }}
       />
