@@ -7,6 +7,7 @@ const windowHeight = Dimensions.get("window").height;
 
 export const mainStyles = StyleSheet.create({
   mainTitle: {
+    marginTop: 10,
     padding: 5,
     borderStyle: "solid",
     borderWidth: 2,
@@ -20,7 +21,6 @@ export const mainStyles = StyleSheet.create({
     height: 60,
     width: windowWidth,
     backgroundColor: offWhite,
-
   },
 })
 export const formStyles = StyleSheet.create({

@@ -3,7 +3,17 @@ import Log from './components/LoginForm';
 import Wel from './components/Welcome';
 import Zip from './components/zipConfirm';
 import mainTit from './components/MainTitles';
+import HomeScr from './components/HomeScreen';
+import Currentbee from './components/CurrentBeers';
+import YourCrate from './components/YourCrates';
+import Subscrib from './components/Subscribe';
+import MyBee from './components/MyBeers';
 
+export const MyBeers = MyBee;
+export const Subscribe = Subscrib;
+export const YourCrates = YourCrate;
+export const CurrentBeers = Currentbee;
+export const HomeScreen = HomeScr;
 export const MainTitle = mainTit;
 export const ZipConfirm = Zip;
 export const Disclaimer = Disc;
