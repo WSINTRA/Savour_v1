@@ -11,20 +11,33 @@ import { AUTH_TOKEN } from "./constants";
  *  - First: Import them into components.js
  *  - Then: add them to the import statement below
  */
-import { Disclaimer, LoginForm, Welcome, ZipConfirm, MainTitle, HomeScreen } from "./components";
+import {
+  Disclaimer,
+  LoginForm,
+  Welcome,
+  ZipConfirm,
+  HomeScreen,
+  CreateAccnt,
+} from "./components";
 //Wraps the app so that a navigation object can be used for screen navigations
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-
 import { createDrawerNavigator } from "@react-navigation/drawer";
-// import gql from "graphql-tag";
+//Storage used in React Native, instead of LocalStorage on web
 import AsyncStorage from "@react-native-community/async-storage";
-import { dimOrange, buttonGrey, buttonBlack, buttonTextGrey } from "./colors";
+//Any colors for styling should be created in colors and then imported where they are needed
+import {
+  dimOrange,
+  buttonGrey,
+  buttonBlack,
+  buttonTextGrey,
+  backgroundWhite,
+  borderGrey,
+} from "./colors";
 
-//This stack is used in the NavigationContainers
+//This stack and drawer is used in the NavigationContainers
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-
 
 //Apollo created as a nameSpace for all functionality of Apollo
 const Apollo = {
@@ -90,16 +103,23 @@ class App extends React.Component {
     firstName: "",
     lastName: "",
     confirmPass: "",
-    PromoCode: "",
+    promoCode: "",
     zipCode: "",
     //keep this as true during dev if you don't want to keep loggin in
-    success: true,
-    // success: false,
+    // success: true,
+    success: false,
     username: "",
   };
 
   //nameSpace created for Register functionality
   RegisterFormFunctions = {
+    //This function resets button color when changing view, call it with your navigation onPress
+    //onPress={()=> {changeButtonStyle();navigation.push("ExamplePage")}  }
+    changeButtonStyle: ()=>{
+      this.setState({
+        buttonStyle: { backgroundColor: buttonGrey, color: buttonTextGrey },
+      })
+    },
     /**
      * changeTextInput is exact same function used in LoginFormFunction the only difference in the logic is
      * the conditional for highlighting the button color
@@ -107,11 +127,12 @@ class App extends React.Component {
      */
     changeTextInput: (property, value) => {
       this.LoginFormFunctions.changeTextInput(property, value);
-      if (this.state.zipCode.length > 3) {
+      let zipLength = this.state.zipCode.length
+      if (zipLength > 3 ) {
         this.setState({
           buttonStyle: { backgroundColor: dimOrange, color: buttonBlack },
         });
-      } else if (this.state.zipCode.length < 1) {
+      } else if (zipLength < 2) {
         this.setState({
           buttonStyle: { backgroundColor: buttonGrey, color: buttonTextGrey },
         });
@@ -129,11 +150,11 @@ class App extends React.Component {
       this.setState({
         [property]: value,
       });
-      if (this.state.email.length > 1 && this.state.password.length > 1) {
+      if (this.state.email.length > 3 && this.state.password.length > 1) {
         this.setState({
           buttonStyle: { backgroundColor: dimOrange, color: buttonBlack },
         });
-      } else if (this.state.email.length < 1) {
+      } else if (this.state.email.length < 2) {
         this.setState({
           buttonStyle: { backgroundColor: buttonGrey, color: buttonTextGrey },
         });
@@ -158,73 +179,117 @@ class App extends React.Component {
     },
   };
   render() {
-    const { zipCode, name, success, email, password, buttonStyle } = this.state;
+    const {
+      zipCode,
+      firstName,
+      lastName,
+      success,
+      email,
+      password,
+      buttonStyle,
+      confirmPass,
+      promoCode,
+    } = this.state;
     const MyTheme = {
       dark: false,
       colors: {
         primary: buttonBlack,
-        background: 'rgb(242, 242, 242)',
-        card: 'rgb(255, 255, 255)',
+        background: backgroundWhite,
+        card: backgroundWhite,
         text: buttonGrey,
-        border: 'rgb(199, 199, 204)',
+        border: borderGrey,
       },
     };
     return (
       <ApolloProvider client={client}>
-       <>
-        {success ? (
-          <NavigationContainer theme={MyTheme}>
-            
-            <Drawer.Navigator>
-              <Drawer.Screen name="Home" component={HomeScreen} />
-             
-            </Drawer.Navigator>
-            
-          </NavigationContainer>
-        ) : (
-          <>
-            <NavigationContainer>
-              <Stack.Navigator initialRouteName="Welcome">
-                <Stack.Screen
-                  name="Welcome"
-                  component={Welcome}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="Disclaimer"
-                  component={Disclaimer}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="ZipConfirm"
-                  options={{ headerShown: false }}
-                >
-                  {(props) => (
-                    <ZipConfirm
-                      buttonStyle={buttonStyle}
-                      zipCode={zipCode}
-                      changeInputText={
-                        this.RegisterFormFunctions.changeTextInput
-                      }
-                    />
-                  )}
-                </Stack.Screen>
-
-                <Stack.Screen name="LoginForm" options={{ headerShown: false }}>
-                  {(props) => (
-                    <LoginForm
-                      buttonStyle={buttonStyle}
-                      email={email}
-                      changeInputText={this.LoginFormFunctions.changeTextInput}
-                      password={password}
-                      _confirm={this.LoginFormFunctions._confirm}
-                    />
-                  )}
-                </Stack.Screen>
-              </Stack.Navigator>
+        <>
+          {success ? (
+            <NavigationContainer theme={MyTheme}>
+              <Drawer.Navigator>
+                {/**This is where we will put the different pages that the side drawer will link too-
+                 * Shipping Address
+                 * Payments & Credits
+                 * Account Info
+                 * Promos
+                 * Notifications
+                 * Support
+                 * Free Beer
+                 * Logout
+                 * Icons that link to social media
+                 * Terms of Use
+                 */}
+                <Drawer.Screen name="Home" component={HomeScreen} />
+              </Drawer.Navigator>
             </NavigationContainer>
-          </>
-        )}
+          ) : (
+            <>
+              <NavigationContainer>
+                <Stack.Navigator initialRouteName="Welcome">
+                  <Stack.Screen
+                    name="Welcome"
+                    component={Welcome}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Disclaimer"
+                    component={Disclaimer}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="ZipConfirm"
+                    options={{ headerShown: false }}
+                  >
+                    {(props) => (
+                      <ZipConfirm
+                        buttonStyle={buttonStyle}
+                        zipCode={zipCode}
+                        changeButtonStyle={this.RegisterFormFunctions.changeButtonStyle}
+                        changeInputText={
+                          this.RegisterFormFunctions.changeTextInput
+                        }
+                      />
+                    )}
+                  </Stack.Screen>
+                  <Stack.Screen
+                    name="CreateAccnt"
+                    options={{ headerShown: false }}
+                  >
+                    {(props) => (
+                      <CreateAccnt
+                        buttonStyle={buttonStyle}
+                        firstName={firstName}
+                        lastName={lastName}
+                        email={email}
+                        password={password}
+                        confirmPass={confirmPass}
+                        promoCode={promoCode}
+                        changeInputText={
+                          this.RegisterFormFunctions.changeTextInput
+                        }
+                      />
+                    )}
+                  </Stack.Screen>
+
+                  <Stack.Screen
+                    name="LoginForm"
+                    options={{ headerShown: false }}
+                  >
+                    {(props) => (
+                      <LoginForm
+                        buttonStyle={buttonStyle}
+                        email={email}
+                        changeInputText={
+                          this.LoginFormFunctions.changeTextInput
+                        }
+                        password={password}
+                        _confirm={this.LoginFormFunctions._confirm}
+                      />
+                    )}
+                  </Stack.Screen>
+                </Stack.Navigator>
+              </NavigationContainer>
+            </>
+          )}
         </>
       </ApolloProvider>
     );

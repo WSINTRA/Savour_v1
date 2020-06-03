@@ -5,13 +5,14 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { useNavigation } from "@react-navigation/native";
 import { buttonBlack, dimOrange, offWhite } from '../colors';
 export default function MainTitle(props) {
+  const iconSize = 32;
   const navigation = useNavigation();
   return (
     <View
       style={mainStyles.mainTitle}
     >
       <Text onPress={() => navigation.openDrawer()}>
-        <MaterialCommunityIcons style={{color: buttonBlack}} name="settings-outline" size="26" />
+        <MaterialCommunityIcons style={{color: buttonBlack}} name="settings-outline" size={iconSize} />
       </Text>
       <Text
         style={{
@@ -27,8 +28,8 @@ export default function MainTitle(props) {
       </Text>
       <Text>
       {/* change this true to be some kind of notification variable */}
-      {props.rightIcon == "blank" ? <MaterialCommunityIcons style={{color: offWhite}} name={props.rightIcon} size="26"/> :
-      <MaterialCommunityIcons style={{color: buttonBlack}} name={props.rightIcon} size="26" />}
+      {props.rightIcon == "blank" ? <MaterialCommunityIcons style={{color: offWhite}} name={props.rightIcon} size={iconSize}/> :
+      <MaterialCommunityIcons style={{color: buttonBlack}} name={props.rightIcon} size={iconSize} />}
         
      
      </Text>

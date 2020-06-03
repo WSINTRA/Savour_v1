@@ -8,7 +8,9 @@ import Currentbee from './components/CurrentBeers';
 import YourCrate from './components/YourCrates';
 import Subscrib from './components/Subscribe';
 import MyBee from './components/MyBeers';
+import CreateAcc from './components/CreateAccnt';
 
+export const CreateAccnt = CreateAcc;
 export const MyBeers = MyBee;
 export const Subscribe = Subscrib;
 export const YourCrates = YourCrate;
