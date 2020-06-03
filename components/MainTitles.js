@@ -4,7 +4,7 @@ import { View, Text, } from "react-native";
 import Icofont from "react-icofont";
 import { useNavigation } from "@react-navigation/native";
 
-export default function MainTitle() {
+export default function MainTitle(props) {
   const navigation = useNavigation();
   return (
     <View
@@ -22,7 +22,8 @@ export default function MainTitle() {
           letterSpacing: 3,
         }}
       >
-        CURRENT BEERS
+        {props.headingTitle}
+       
       </Text>
       <Text>
       {/* change this true to be some kind of notification variable */}
