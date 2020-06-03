@@ -1,4 +1,5 @@
-import { mainStyles } from './styles/global'
+import React from "react";
+import { mainStyles } from '../styles/global'
 import { View, Text, } from "react-native";
 import Icofont from "react-icofont";
 import { useNavigation } from "@react-navigation/native";
