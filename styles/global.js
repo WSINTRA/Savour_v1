@@ -27,11 +27,11 @@ export const mainStyles = StyleSheet.create({
 export const registerStyle = StyleSheet.create({
   header: {
     textAlign: "center",
-    marginTop: 30,
+    marginTop: 10,
   },
   row1:{
     flexDirection:"row",
-    marginTop: 50,
+    marginTop: 30,
     justifyContent: "space-around"
    },
    nameInput:{
@@ -42,7 +42,7 @@ export const registerStyle = StyleSheet.create({
     borderRightColor: offWhite,
     borderLeftColor: offWhite,
     borderWidth: 1,
-    paddingBottom: 20,
+    paddingBottom: 10,
     fontSize: 18,
    },
    input: {

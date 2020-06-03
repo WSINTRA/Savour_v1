@@ -12,11 +12,12 @@ import {
 import { offWhite, dimOrange } from "../colors";
 
 function zipConfirm(props) {
-  const { zipCode, buttonStyle, changeInputText, changeButtonStyle } = props;
+  const { zipCode, buttonStyle, changeInputText, changeButtonStyle, checkForReadyButton } = props;
   const [lineStyle, setlineStyle] = useState({
     borderBottomColor: offWhite,
   });
   const navigation = useNavigation();
+  const confirm = zipCode.length>3
   return (
     <>
       <KeyboardAvoidingView
@@ -54,14 +55,14 @@ function zipConfirm(props) {
           name="zip"
           type="text"
           placeholder="Zip Code"
-          onChangeText={(e) => changeInputText("zipCode", e)}
+          onChangeText={(e) => {changeInputText("zipCode", e);checkForReadyButton( confirm ) }}
           autoFocus={true}
           onFocus={() => setlineStyle({ borderBottomColor: dimOrange })}
           onEndEditing={() => setlineStyle({ borderBottomColor: offWhite })}
         />
         <View style={formStyles.formBound}>
           <Text style={[buttonStyle, formStyles.login]}
-          onPress={()=> {changeButtonStyle();navigation.push("CreateAccnt")}  } >CONTINUE</Text>
+          onPress={confirm ? ()=> {changeButtonStyle();navigation.push("CreateAccnt")} : null } >CONTINUE</Text>
         </View>
       </KeyboardAvoidingView>
     </>

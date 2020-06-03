@@ -105,7 +105,6 @@ class App extends React.Component {
     confirmPass: "",
     promoCode: "",
     zipCode: "",
-    zipSaved: false,
     //keep this as true during dev if you don't want to keep loggin in
     // success: true,
     success: false,
@@ -119,39 +118,31 @@ class App extends React.Component {
     changeButtonStyle: ()=>{
       this.setState({
         buttonStyle: { backgroundColor: buttonGrey, color: buttonTextGrey },
-        zipSaved: true
       })
     },
     /**
      * changeTextInput is exact same function used in LoginFormFunction the only difference in the logic is
      * the conditional for highlighting the button color
      * so we point the changeText from RegisterForm to the changeText inside LoginFormFunction adhering to DRY
-     * 
-     * TODO: Clean up this function and extract out the functionality into clean functions that change the buttonStyle
-     */
+    */
+    //this function will check based on rules if it should change button color 
+    checkForReadyButton: (rules)=>{
+        if(rules){
+            this.setState({
+                buttonStyle: { backgroundColor: dimOrange, color: offWhite },
+            })
+        }
+        else if(!rules){
+          this.RegisterFormFunctions.changeButtonStyle()
+        }
+    },
     changeTextInput: (property, value) => {
       this.LoginFormFunctions.changeTextInput(property, value);
-      const { zipSaved, confirmPass, password, firstName, lastName, email } = this.state
-      let zipLength = this.state.zipCode.length
-      if ( (zipLength > 3 && !zipSaved) || 
-        (confirmPass === password && firstName.length > 2 && 
-        lastName.length > 2 && 
-        email.length > 3 && 
-        password.length > 2 &&
-        confirmPass.length > 2 )) {
-        this.setState({
-          buttonStyle: { backgroundColor: dimOrange, color: offWhite },
-        });
-      } else if (zipLength < 2) {
-        this.setState({
-          buttonStyle: { backgroundColor: buttonGrey, color: buttonTextGrey },
-        });
-      }
     },
     //This should only be called by MUTATION
 
     _confirm: (data) => this.LoginFormFunctions._confirm(data),
-  };
+    };
 
   //nameSpace created for loginForm functionality
   LoginFormFunctions = {
@@ -160,15 +151,6 @@ class App extends React.Component {
       this.setState({
         [property]: value,
       });
-      if (this.state.email.length > 3 && this.state.password.length > 1) {
-        this.setState({
-          buttonStyle: { backgroundColor: dimOrange, color: buttonBlack },
-        });
-      } else if (this.state.email.length < 2) {
-        this.setState({
-          buttonStyle: { backgroundColor: buttonGrey, color: buttonTextGrey },
-        });
-      }
     },
     //Once data is returned from API, _confirm is fired by MUTATION
     _confirm: async (data) => {
@@ -254,6 +236,7 @@ class App extends React.Component {
                       <ZipConfirm
                         buttonStyle={buttonStyle}
                         zipCode={zipCode}
+                        checkForReadyButton={this.RegisterFormFunctions.checkForReadyButton}
                         changeButtonStyle={this.RegisterFormFunctions.changeButtonStyle}
                         changeInputText={
                           this.RegisterFormFunctions.changeTextInput
@@ -274,6 +257,7 @@ class App extends React.Component {
                         password={password}
                         confirmPass={confirmPass}
                         promoCode={promoCode}
+                        checkForReadyButton={this.RegisterFormFunctions.checkForReadyButton}
                         changeInputText={
                           this.RegisterFormFunctions.changeTextInput
                         }
