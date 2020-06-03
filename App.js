@@ -32,7 +32,7 @@ import {
   buttonBlack,
   buttonTextGrey,
   backgroundWhite,
-  borderGrey,
+  offWhite,
 } from "./colors";
 
 //This stack and drawer is used in the NavigationContainers
@@ -105,6 +105,7 @@ class App extends React.Component {
     confirmPass: "",
     promoCode: "",
     zipCode: "",
+    zipSaved: false,
     //keep this as true during dev if you don't want to keep loggin in
     // success: true,
     success: false,
@@ -118,19 +119,28 @@ class App extends React.Component {
     changeButtonStyle: ()=>{
       this.setState({
         buttonStyle: { backgroundColor: buttonGrey, color: buttonTextGrey },
+        zipSaved: true
       })
     },
     /**
      * changeTextInput is exact same function used in LoginFormFunction the only difference in the logic is
      * the conditional for highlighting the button color
      * so we point the changeText from RegisterForm to the changeText inside LoginFormFunction adhering to DRY
+     * 
+     * TODO: Clean up this function and extract out the functionality into clean functions that change the buttonStyle
      */
     changeTextInput: (property, value) => {
       this.LoginFormFunctions.changeTextInput(property, value);
+      const { zipSaved, confirmPass, password, firstName, lastName, email } = this.state
       let zipLength = this.state.zipCode.length
-      if (zipLength > 3 ) {
+      if ( (zipLength > 3 && !zipSaved) || 
+        (confirmPass === password && firstName.length > 2 && 
+        lastName.length > 2 && 
+        email.length > 3 && 
+        password.length > 2 &&
+        confirmPass.length > 2 )) {
         this.setState({
-          buttonStyle: { backgroundColor: dimOrange, color: buttonBlack },
+          buttonStyle: { backgroundColor: dimOrange, color: offWhite },
         });
       } else if (zipLength < 2) {
         this.setState({
@@ -190,6 +200,7 @@ class App extends React.Component {
       confirmPass,
       promoCode,
     } = this.state;
+
     const MyTheme = {
       dark: false,
       colors: {
@@ -197,7 +208,7 @@ class App extends React.Component {
         background: backgroundWhite,
         card: backgroundWhite,
         text: buttonGrey,
-        border: borderGrey,
+        border: dimOrange,
       },
     };
     return (
