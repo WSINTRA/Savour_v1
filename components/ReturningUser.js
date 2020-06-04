@@ -1,6 +1,6 @@
 import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import {HomeScreen} from "../components.js";
+import {HomeScreen} from "../comps.js";
 import { CustomDrawerContent } from '../utilities';
 
 const ReturningUser = () => {
