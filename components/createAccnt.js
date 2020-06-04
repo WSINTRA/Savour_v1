@@ -23,7 +23,29 @@ function CreateAccnt(props) {
     password,
     confirmPass,
     promoCode,
+    checkForReadyButton
   } = props;
+//Create better validations than just checking for length, use regex for characters and create safe password validations 
+// password will be check again later when submitting to the backend to ensure they are both equal
+//TODO : Perform a quick vvalidation when the continue button is pressed
+  const validations=()=>{
+    // console.log("Checks in place: \n", 
+    // "First name length",firstName.length,
+    // "Last name length", lastName.length,
+    // "Email length", email.length,
+    // "Password length", password.length,
+    // "Confirm pass length", confirmPass.length,
+    // confirmPass, password)
+    if(firstName.length > 2 && 
+      lastName.length > 2 &&
+      email.length > 2 &&
+      password.length > 2 &&
+      confirmPass.length > 2 &&
+      password.length > 2){
+        return true
+    }
+    return false
+  }
   return (
     <>
       <KeyboardAvoidingView
@@ -64,6 +86,7 @@ function CreateAccnt(props) {
               type="text"
               placeholder="Last Name"
               autoFocus={false}
+              // onFocus={}
             />
           </View>
           <View style={registerStyle.row2}>
@@ -92,7 +115,7 @@ function CreateAccnt(props) {
               style={registerStyle.input}
               value={confirmPass}
               name="confirmPass"
-              onChangeText={(e) => changeInputText("confirmPass", e)}
+              onChangeText={(e) => {changeInputText("confirmPass", e); checkForReadyButton(validations())}}
               type="password"
               secureTextEntry={true}
               placeholder="Confirm Password"

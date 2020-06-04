@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Dimensions } from "react-native";
-import { offWhite, dimOrange, buttonGrey, borderGrey, buttonBlack } from "../colors";
+import { offWhite, dimOrange, buttonGrey, borderGrey, buttonBlack, backgroundWhite } from "../colors";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
@@ -27,11 +27,11 @@ export const mainStyles = StyleSheet.create({
 export const registerStyle = StyleSheet.create({
   header: {
     textAlign: "center",
-    marginTop: 30,
+    marginTop: 10,
   },
   row1:{
     flexDirection:"row",
-    marginTop: 50,
+    marginTop: 30,
     justifyContent: "space-around"
    },
    nameInput:{
@@ -42,7 +42,7 @@ export const registerStyle = StyleSheet.create({
     borderRightColor: offWhite,
     borderLeftColor: offWhite,
     borderWidth: 1,
-    paddingBottom: 20,
+    paddingBottom: 10,
     fontSize: 18,
    },
    input: {
@@ -141,7 +141,7 @@ export const formStyles = StyleSheet.create({
   loginButton: {
     width: windowWidth / 2,
     height: 80,
-    backgroundColor: buttonGrey,
+    backgroundColor: backgroundWhite,
     textAlign: "center",
     paddingTop: 15,
     fontSize: 16,

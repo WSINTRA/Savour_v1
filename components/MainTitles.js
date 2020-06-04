@@ -3,7 +3,8 @@ import { mainStyles } from '../styles/global'
 import { View, Text, } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from "@react-navigation/native";
-import { buttonBlack, dimOrange, offWhite } from '../colors';
+import { buttonBlack, offWhite } from '../colors';
+
 export default function MainTitle(props) {
   const iconSize = 32;
   const navigation = useNavigation();

@@ -10,10 +10,10 @@ function HomeScreen() {
   return (
     <Tab.Navigator
       initialRouteName="Current Beers"
-      activeColor={buttonBlack}
       labelStyle={{ fontSize: 12 }}
       tabBarOptions={{
         showLabel: false,
+        activeTintColor: buttonBlack
       }}
     >
       <Tab.Screen
