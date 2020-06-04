@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Dimensions } from "react-native";
-import { offWhite, dimOrange, buttonGrey, borderGrey, buttonBlack } from "../colors";
+import { offWhite, dimOrange, buttonGrey, borderGrey, buttonBlack, backgroundWhite } from "../colors";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
@@ -141,7 +141,7 @@ export const formStyles = StyleSheet.create({
   loginButton: {
     width: windowWidth / 2,
     height: 80,
-    backgroundColor: buttonGrey,
+    backgroundColor: backgroundWhite,
     textAlign: "center",
     paddingTop: 15,
     fontSize: 16,

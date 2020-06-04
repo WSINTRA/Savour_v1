@@ -33,6 +33,7 @@ import {
   buttonTextGrey,
   backgroundWhite,
   offWhite,
+  borderGrey,
 } from "./colors";
 
 //This stack and drawer is used in the NavigationContainers
@@ -115,34 +116,33 @@ class App extends React.Component {
   RegisterFormFunctions = {
     //This function resets button color when changing view, call it with your navigation onPress
     //onPress={()=> {changeButtonStyle();navigation.push("ExamplePage")}  }
-    changeButtonStyle: ()=>{
+    changeButtonStyle: () => {
       this.setState({
         buttonStyle: { backgroundColor: buttonGrey, color: buttonTextGrey },
-      })
+      });
+    },
+
+    //this function will check based on rules if it should change button color
+    checkForReadyButton: (rules) => {
+      if (rules) {
+        this.setState({
+          buttonStyle: { backgroundColor: dimOrange, color: offWhite },
+        });
+      } else if (!rules) {
+        this.RegisterFormFunctions.changeButtonStyle();
+      }
     },
     /**
-     * changeTextInput is exact same function used in LoginFormFunction the only difference in the logic is
-     * the conditional for highlighting the button color
+     * changeTextInput is exact same function used in LoginFormFunction
      * so we point the changeText from RegisterForm to the changeText inside LoginFormFunction adhering to DRY
-    */
-    //this function will check based on rules if it should change button color 
-    checkForReadyButton: (rules)=>{
-        if(rules){
-            this.setState({
-                buttonStyle: { backgroundColor: dimOrange, color: offWhite },
-            })
-        }
-        else if(!rules){
-          this.RegisterFormFunctions.changeButtonStyle()
-        }
-    },
+     */
     changeTextInput: (property, value) => {
       this.LoginFormFunctions.changeTextInput(property, value);
     },
     //This should only be called by MUTATION
 
     _confirm: (data) => this.LoginFormFunctions._confirm(data),
-    };
+  };
 
   //nameSpace created for loginForm functionality
   LoginFormFunctions = {
@@ -186,7 +186,7 @@ class App extends React.Component {
     const MyTheme = {
       dark: false,
       colors: {
-        primary: buttonBlack,
+        primary: backgroundWhite,
         background: backgroundWhite,
         card: backgroundWhite,
         text: buttonGrey,
@@ -198,7 +198,14 @@ class App extends React.Component {
         <>
           {success ? (
             <NavigationContainer theme={MyTheme}>
-              <Drawer.Navigator>
+              <Drawer.Navigator
+              drawerContentOptions={{
+                activeBackgroundColor: backgroundWhite,
+                activeTintColor: buttonBlack,
+                itemStyle: { marginVertical: 5 },
+                labelStyle: {textTransform: 'uppercase', color: buttonBlack, letterSpacing: 3,}
+              }}>
+                        
                 {/**This is where we will put the different pages that the side drawer will link too-
                  * Shipping Address
                  * Payments & Credits
@@ -211,7 +218,15 @@ class App extends React.Component {
                  * Icons that link to social media
                  * Terms of Use
                  */}
-                <Drawer.Screen name="Home" component={HomeScreen} />
+                <Drawer.Screen name=" " component={HomeScreen} />
+                <Drawer.Screen name="Shipping Address" component={HomeScreen}/>
+                <Drawer.Screen name="Payments & Credits" component={HomeScreen}/>
+                <Drawer.Screen name="Account Info" component={HomeScreen}/>
+                <Drawer.Screen name="Promos" component={HomeScreen}/>
+                <Drawer.Screen name="Notifications" component={HomeScreen}/>
+                <Drawer.Screen name="Support" component={HomeScreen}/>
+                <Drawer.Screen name="Free beer" component={HomeScreen}/>
+                <Drawer.Screen name="Log out" component={HomeScreen}/>
               </Drawer.Navigator>
             </NavigationContainer>
           ) : (
@@ -236,8 +251,12 @@ class App extends React.Component {
                       <ZipConfirm
                         buttonStyle={buttonStyle}
                         zipCode={zipCode}
-                        checkForReadyButton={this.RegisterFormFunctions.checkForReadyButton}
-                        changeButtonStyle={this.RegisterFormFunctions.changeButtonStyle}
+                        checkForReadyButton={
+                          this.RegisterFormFunctions.checkForReadyButton
+                        }
+                        changeButtonStyle={
+                          this.RegisterFormFunctions.changeButtonStyle
+                        }
                         changeInputText={
                           this.RegisterFormFunctions.changeTextInput
                         }
@@ -257,7 +276,9 @@ class App extends React.Component {
                         password={password}
                         confirmPass={confirmPass}
                         promoCode={promoCode}
-                        checkForReadyButton={this.RegisterFormFunctions.checkForReadyButton}
+                        checkForReadyButton={
+                          this.RegisterFormFunctions.checkForReadyButton
+                        }
                         changeInputText={
                           this.RegisterFormFunctions.changeTextInput
                         }
