@@ -11,26 +11,22 @@ import { AUTH_TOKEN } from "./constants";
  *  - First: Import them into components.js
  *  - Then: add them to the import statement below
  */
-import {
-  NewUserStartPage,
-  ReturningUser
-} from "./comps";
-
+import { NewUserStartPage, ReturningUser } from "./comps";
+////////////////////////////////////////////////////////////////
 //Wraps the app so that a navigation object can be used for screen navigations
+////////////////////////////////////////////////////////////////
 import { NavigationContainer } from "@react-navigation/native";
-
+////////////////////////////////////////////////////////////////
 //Storage used in React Native, instead of LocalStorage on web
+////////////////////////////////////////////////////////////////
 import AsyncStorage from "@react-native-community/async-storage";
-
+////////////////////////////////////////////////////////////////
 //Any colors for styling should be created in colors and then imported where they are needed
-import {
-  dimOrange,
-  buttonGrey,
-  buttonTextGrey,
-  offWhite,
-} from "./colors";
-
+////////////////////////////////////////////////////////////////
+import { dimOrange, buttonGrey, buttonTextGrey, offWhite } from "./colors";
+////////////////////////////////////////////////////////////////
 //Apollo created as a nameSpace for all functionality of Apollo
+////////////////////////////////////////////////////////////////
 const Apollo = {
   httpLink: createHttpLink({
     uri: "http://192.168.0.12:4000",
@@ -59,13 +55,13 @@ const Apollo = {
     });
   }),
 };
+////////////////////////////////////////////////////////////////
 //this client is passed into the Apollo App wrapper
+////////////////////////////////////////////////////////////////
 const client = new ApolloClient({
   link: Apollo.authLink.concat(Apollo.httpLink),
   cache: new InMemoryCache(),
 });
-
-
 
 class App extends React.Component {
   // componentDidMount() {
@@ -90,12 +86,12 @@ class App extends React.Component {
     promoCode: "",
     zipCode: "",
     //keep this as true during dev if you don't want to keep loggin in
-    // success: true,
     success: false,
     username: "",
   };
-
+  ////////////////////////////////////////////////////////////////
   //nameSpace created for Register functionality
+  ////////////////////////////////////////////////////////////////
   RegisterFormFunctions = {
     //This function resets button color when changing view, call it with your navigation onPress
     //onPress={()=> {changeButtonStyle();navigation.push("ExamplePage")}  }
@@ -135,12 +131,14 @@ class App extends React.Component {
       this.setState({
         success: true,
         username: data.signup.user.firstName,
+        password: "",
+        confirmPass: "",
       });
     },
-
   };
-
-  //nameSpace created for loginForm functionality
+////////////////////////////////////////////////////////////////
+//nameSpace created for loginForm functionality
+////////////////////////////////////////////////////////////////
   LoginFormFunctions = {
     //Change the style color and form control
     changeTextInput: (property, value) => {
@@ -162,21 +160,48 @@ class App extends React.Component {
       this.setState({
         success: true,
         username: data.login.user.firstName,
+        confirmPass: "",
+        password: "",
       });
     },
   };
+  ////////////////////////////////////////////////////////////////
+  //namespace for User functions
+  ////////////////////////////////////////////////////////////////
+  UserFunctions = {
+    //Reset state related to user to original empty strings
+    logout: () => {
+      this.setState({
+        email: "",
+        password: "",
+        firstName: "",
+        lastName: "",
+        confirmPass: "",
+        promoCode: "",
+        zipCode: "",
+        success: false,
+        username: "",
+      });
+      this.RegisterFormFunctions.changeButtonStyle();
+    },
+  };
+
   render() {
-    const { success } = this.state
+    const { success } = this.state;
     return (
       <ApolloProvider client={client}>
-         <NavigationContainer >
-        <>
-          { success ? (
-           <ReturningUser />      
-          ) : (
-            <NewUserStartPage {... this.state} LoginFormFunctions={this.LoginFormFunctions} RegisterFormFunctions={this.RegisterFormFunctions}/>
-          )}
-        </>
+        <NavigationContainer>
+          <>
+            {success ? (
+              <ReturningUser logout={this.UserFunctions.logout} />
+            ) : (
+              <NewUserStartPage
+                {...this.state}
+                LoginFormFunctions={this.LoginFormFunctions}
+                RegisterFormFunctions={this.RegisterFormFunctions}
+              />
+            )}
+          </>
         </NavigationContainer>
       </ApolloProvider>
     );

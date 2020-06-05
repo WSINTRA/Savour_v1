@@ -76,6 +76,9 @@ const NewUserStartPage = (props) =>{
               changeInputText={LoginFormFunctions.changeTextInput}
               password={password}
               _confirm={LoginFormFunctions._confirm}
+              checkForReadyButton={
+                RegisterFormFunctions.checkForReadyButton
+              }
             />
           )}
         </Stack.Screen>

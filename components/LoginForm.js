@@ -25,6 +25,7 @@ const LOGIN_MUTATION = gql`
     }
   }
 `;
+
 const LoginForm = (props) => {
   const [emailLineStyle, setEmailLineStyle] = useState({
     borderBottomColor: offWhite
@@ -33,7 +34,15 @@ const LoginForm = (props) => {
     borderBottomColor: offWhite
   });
   const navigation = useNavigation();
-  const { buttonStyle, email, changeInputText, password, _confirm } = props;
+  const { buttonStyle, email, changeInputText, password, _confirm, checkForReadyButton } = props;
+  
+  const validations =()=>{
+    if(password.length > 2 && email.length > 2){
+      return true
+    }
+    return false
+  }
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -78,7 +87,7 @@ const LoginForm = (props) => {
       <TextInput
         style={[formStyles.input, passLineStyle]}
         value={password}
-        onChangeText={(e) => props.changeInputText("password", e)}
+        onChangeText={(e) => {changeInputText("password", e); checkForReadyButton(validations())}}
         type="password"
         name="password"
         secureTextEntry={true}
@@ -90,10 +99,9 @@ const LoginForm = (props) => {
         {"\n"}
         {"\n"}Forgot password?
       </Text>
-
-      <Mutation
+      {validations() ? <Mutation
         mutation={LOGIN_MUTATION}
-        variables={{ email, password }}
+        variables={{ email, password}}
         onCompleted={(data) => _confirm(data)}
       >
         {(mutation) => (
@@ -103,7 +111,14 @@ const LoginForm = (props) => {
             </Text>
           </View>
         )}
-      </Mutation>
+      </Mutation> :
+      <View style={formStyles.formBound}>
+      <Text style={[buttonStyle, formStyles.login]}>
+        Login
+      </Text>
+    </View>
+       }
+      
     </KeyboardAvoidingView>
   );
 };

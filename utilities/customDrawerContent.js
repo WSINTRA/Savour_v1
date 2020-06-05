@@ -34,6 +34,7 @@ return (<DrawerContentScrollView {...props}>
         label={({ focused, color }) => <Text style={drawerStyles.label}>Free Beer</Text>}
       />
       <DrawerItem
+        onPress={()=>props.logout()}
         label={({ focused, color }) => <Text style={drawerStyles.label}>Log Out</Text>}
       />
     </DrawerContentScrollView>
