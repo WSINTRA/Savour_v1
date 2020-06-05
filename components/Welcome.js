@@ -25,11 +25,14 @@ const Welcome = ({ navigation }) => {
             SIGN UP
           </Text>
         </TouchableHighlight>
+
         <TouchableHighlight 
         onPress={() =>
           navigation.navigate('LoginForm', { name: 'LoginForm' })
         }>
-          <Text style={formStyles.loginButton}>LOGIN</Text>
+          <Text style={formStyles.loginButton}>
+            LOGIN
+            </Text>
         </TouchableHighlight>
       </View>
     </View>

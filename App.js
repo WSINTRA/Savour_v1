@@ -11,36 +11,22 @@ import { AUTH_TOKEN } from "./constants";
  *  - First: Import them into components.js
  *  - Then: add them to the import statement below
  */
-import {
-  Disclaimer,
-  LoginForm,
-  Welcome,
-  ZipConfirm,
-  HomeScreen,
-  CreateAccnt,
-} from "./components";
+import { NewUserStartPage, ReturningUser } from "./comps";
+////////////////////////////////////////////////////////////////
 //Wraps the app so that a navigation object can be used for screen navigations
+////////////////////////////////////////////////////////////////
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+////////////////////////////////////////////////////////////////
 //Storage used in React Native, instead of LocalStorage on web
+////////////////////////////////////////////////////////////////
 import AsyncStorage from "@react-native-community/async-storage";
+////////////////////////////////////////////////////////////////
 //Any colors for styling should be created in colors and then imported where they are needed
-import {
-  dimOrange,
-  buttonGrey,
-  buttonBlack,
-  buttonTextGrey,
-  backgroundWhite,
-  offWhite,
-  borderGrey,
-} from "./colors";
-
-//This stack and drawer is used in the NavigationContainers
-const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
-
+////////////////////////////////////////////////////////////////
+import { dimOrange, buttonGrey, buttonTextGrey, offWhite } from "./colors";
+////////////////////////////////////////////////////////////////
 //Apollo created as a nameSpace for all functionality of Apollo
+////////////////////////////////////////////////////////////////
 const Apollo = {
   httpLink: createHttpLink({
     uri: "http://192.168.0.12:4000",
@@ -69,20 +55,13 @@ const Apollo = {
     });
   }),
 };
+////////////////////////////////////////////////////////////////
 //this client is passed into the Apollo App wrapper
+////////////////////////////////////////////////////////////////
 const client = new ApolloClient({
   link: Apollo.authLink.concat(Apollo.httpLink),
   cache: new InMemoryCache(),
 });
-
-//Saving this for register form page
-// const SIGNUP_MUTATION = gql`
-//   mutation SignupMutation($email: String!, $password: String!, $name: String!) {
-//     signup(email: $email, password: $password, name: $name) {
-//       token
-//     }
-//   }
-// `;
 
 class App extends React.Component {
   // componentDidMount() {
@@ -107,12 +86,12 @@ class App extends React.Component {
     promoCode: "",
     zipCode: "",
     //keep this as true during dev if you don't want to keep loggin in
-    // success: true,
     success: false,
     username: "",
   };
-
+  ////////////////////////////////////////////////////////////////
   //nameSpace created for Register functionality
+  ////////////////////////////////////////////////////////////////
   RegisterFormFunctions = {
     //This function resets button color when changing view, call it with your navigation onPress
     //onPress={()=> {changeButtonStyle();navigation.push("ExamplePage")}  }
@@ -139,12 +118,27 @@ class App extends React.Component {
     changeTextInput: (property, value) => {
       this.LoginFormFunctions.changeTextInput(property, value);
     },
-    //This should only be called by MUTATION
-
-    _confirm: (data) => this.LoginFormFunctions._confirm(data),
+    _confirm: async (data) => {
+      let token = data.signup.token;
+      this.RegisterFormFunctions._saveUserData(token, data);
+    },
+    _saveUserData: async (token, data) => {
+      try {
+        await AsyncStorage.setItem(AUTH_TOKEN, token);
+      } catch (e) {
+        console.log(e);
+      }
+      this.setState({
+        success: true,
+        username: data.signup.user.firstName,
+        password: "",
+        confirmPass: "",
+      });
+    },
   };
-
-  //nameSpace created for loginForm functionality
+////////////////////////////////////////////////////////////////
+//nameSpace created for loginForm functionality
+////////////////////////////////////////////////////////////////
   LoginFormFunctions = {
     //Change the style color and form control
     changeTextInput: (property, value) => {
@@ -154,7 +148,6 @@ class App extends React.Component {
     },
     //Once data is returned from API, _confirm is fired by MUTATION
     _confirm: async (data) => {
-      // console.log(data)
       let token = data.login.token;
       this.LoginFormFunctions._saveUserData(token, data);
     },
@@ -166,147 +159,50 @@ class App extends React.Component {
       }
       this.setState({
         success: true,
-        username: data.login.user.name,
+        username: data.login.user.firstName,
+        confirmPass: "",
+        password: "",
       });
     },
   };
-  render() {
-    const {
-      zipCode,
-      firstName,
-      lastName,
-      success,
-      email,
-      password,
-      buttonStyle,
-      confirmPass,
-      promoCode,
-    } = this.state;
+  ////////////////////////////////////////////////////////////////
+  //namespace for User functions
+  ////////////////////////////////////////////////////////////////
+  UserFunctions = {
+    //Reset state related to user to original empty strings
+    logout: () => {
+      this.setState({
+        email: "",
+        password: "",
+        firstName: "",
+        lastName: "",
+        confirmPass: "",
+        promoCode: "",
+        zipCode: "",
+        success: false,
+        username: "",
+      });
+      this.RegisterFormFunctions.changeButtonStyle();
+    },
+  };
 
-    const MyTheme = {
-      dark: false,
-      colors: {
-        primary: backgroundWhite,
-        background: backgroundWhite,
-        card: backgroundWhite,
-        text: buttonGrey,
-        border: dimOrange,
-      },
-    };
+  render() {
+    const { success } = this.state;
     return (
       <ApolloProvider client={client}>
-        <>
-          {success ? (
-            <NavigationContainer theme={MyTheme}>
-              <Drawer.Navigator
-              drawerContentOptions={{
-                activeBackgroundColor: backgroundWhite,
-                activeTintColor: buttonBlack,
-                itemStyle: { marginVertical: 5 },
-                labelStyle: {textTransform: 'uppercase', color: buttonBlack, letterSpacing: 3,}
-              }}>
-                        
-                {/**This is where we will put the different pages that the side drawer will link too-
-                 * Shipping Address
-                 * Payments & Credits
-                 * Account Info
-                 * Promos
-                 * Notifications
-                 * Support
-                 * Free Beer
-                 * Logout
-                 * Icons that link to social media
-                 * Terms of Use
-                 */}
-                <Drawer.Screen name=" " component={HomeScreen} />
-                <Drawer.Screen name="Shipping Address" component={HomeScreen}/>
-                <Drawer.Screen name="Payments & Credits" component={HomeScreen}/>
-                <Drawer.Screen name="Account Info" component={HomeScreen}/>
-                <Drawer.Screen name="Promos" component={HomeScreen}/>
-                <Drawer.Screen name="Notifications" component={HomeScreen}/>
-                <Drawer.Screen name="Support" component={HomeScreen}/>
-                <Drawer.Screen name="Free beer" component={HomeScreen}/>
-                <Drawer.Screen name="Log out" component={HomeScreen}/>
-              </Drawer.Navigator>
-            </NavigationContainer>
-          ) : (
-            <>
-              <NavigationContainer>
-                <Stack.Navigator initialRouteName="Welcome">
-                  <Stack.Screen
-                    name="Welcome"
-                    component={Welcome}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="Disclaimer"
-                    component={Disclaimer}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="ZipConfirm"
-                    options={{ headerShown: false }}
-                  >
-                    {(props) => (
-                      <ZipConfirm
-                        buttonStyle={buttonStyle}
-                        zipCode={zipCode}
-                        checkForReadyButton={
-                          this.RegisterFormFunctions.checkForReadyButton
-                        }
-                        changeButtonStyle={
-                          this.RegisterFormFunctions.changeButtonStyle
-                        }
-                        changeInputText={
-                          this.RegisterFormFunctions.changeTextInput
-                        }
-                      />
-                    )}
-                  </Stack.Screen>
-                  <Stack.Screen
-                    name="CreateAccnt"
-                    options={{ headerShown: false }}
-                  >
-                    {(props) => (
-                      <CreateAccnt
-                        buttonStyle={buttonStyle}
-                        firstName={firstName}
-                        lastName={lastName}
-                        email={email}
-                        password={password}
-                        confirmPass={confirmPass}
-                        promoCode={promoCode}
-                        checkForReadyButton={
-                          this.RegisterFormFunctions.checkForReadyButton
-                        }
-                        changeInputText={
-                          this.RegisterFormFunctions.changeTextInput
-                        }
-                      />
-                    )}
-                  </Stack.Screen>
-
-                  <Stack.Screen
-                    name="LoginForm"
-                    options={{ headerShown: false }}
-                  >
-                    {(props) => (
-                      <LoginForm
-                        buttonStyle={buttonStyle}
-                        email={email}
-                        changeInputText={
-                          this.LoginFormFunctions.changeTextInput
-                        }
-                        password={password}
-                        _confirm={this.LoginFormFunctions._confirm}
-                      />
-                    )}
-                  </Stack.Screen>
-                </Stack.Navigator>
-              </NavigationContainer>
-            </>
-          )}
-        </>
+        <NavigationContainer>
+          <>
+            {success ? (
+              <ReturningUser logout={this.UserFunctions.logout} />
+            ) : (
+              <NewUserStartPage
+                {...this.state}
+                LoginFormFunctions={this.LoginFormFunctions}
+                RegisterFormFunctions={this.RegisterFormFunctions}
+              />
+            )}
+          </>
+        </NavigationContainer>
       </ApolloProvider>
     );
   }

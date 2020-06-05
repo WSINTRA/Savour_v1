@@ -11,6 +11,19 @@ import {
   ScrollView,
 } from "react-native";
 import { offWhite, dimOrange, borderGrey } from "../colors";
+import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
+
+const SIGNUP_MUTATION = gql`
+  mutation SignupMutation($email: String!, $password: String!, $firstName: String!, $lastName:String!, $zipCode: String!) {
+    signup(email: $email, password: $password, firstName: $firstName, lastName: $lastName, zipCode: $zipCode) {
+      token
+      user{
+        firstName
+      },
+    }
+  }
+`;
 
 function CreateAccnt(props) {
   const navigation = useNavigation();
@@ -23,7 +36,9 @@ function CreateAccnt(props) {
     password,
     confirmPass,
     promoCode,
-    checkForReadyButton
+    checkForReadyButton,
+    zipCode,
+    _confirm
   } = props;
 //Create better validations than just checking for length, use regex for characters and create safe password validations 
 // password will be check again later when submitting to the backend to ensure they are both equal
@@ -86,7 +101,6 @@ function CreateAccnt(props) {
               type="text"
               placeholder="Last Name"
               autoFocus={false}
-              // onFocus={}
             />
           </View>
           <View style={registerStyle.row2}>
@@ -143,9 +157,19 @@ function CreateAccnt(props) {
             </Text>
           </View>
         </ScrollView>
-        <View style={formStyles.formBound}>
-          <Text style={[buttonStyle, formStyles.login]}>CONTINUE</Text>
-        </View>
+        <Mutation
+        mutation={SIGNUP_MUTATION}
+        variables={{ email, password, firstName, lastName, zipCode }}
+        onCompleted={(data) => _confirm(data)}
+      >
+        {(mutation) => (
+          <View style={formStyles.formBound}>
+            <Text onPress={mutation} style={[buttonStyle, formStyles.login]}>
+              CONTINUE
+            </Text>
+          </View>
+        )}
+      </Mutation>
       </KeyboardAvoidingView>
     </>
   );

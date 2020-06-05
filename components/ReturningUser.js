@@ -3,14 +3,15 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import {HomeScreen} from "../comps.js";
 import { CustomDrawerContent } from '../utilities';
 
-const ReturningUser = () => {
+const ReturningUser = (props) => {
   const Drawer = createDrawerNavigator();
+  const { logout } = props;
   return (
     //Custom draw can be found in utilities folder, this is where we create the labels and icons for the nav drawer,
     // Then we can create navigation.push() events to the Drawer Screens below
     <Drawer.Navigator
       drawerStyle={{ paddingTop: 40, paddingLeft: 10, paddingRight: 10 }}
-      drawerContent={(props) => <CustomDrawerContent {...props} />}
+      drawerContent={(props) => <CustomDrawerContent logout={logout} {...props} />}
     >
       {/**This is where we will put the different pages that the side drawer will link too-
        * Shipping Address

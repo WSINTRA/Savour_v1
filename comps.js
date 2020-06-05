@@ -9,7 +9,11 @@ import YourCrate from './components/YourCrates';
 import Subscrib from './components/Subscribe';
 import MyBee from './components/MyBeers';
 import CreateAcc from './components/CreateAccnt';
+import NewUserStart from './components/NewUserStartPage';
+import ReturnUser from './components/ReturningUser';
 
+export const ReturningUser = ReturnUser;
+export const NewUserStartPage = NewUserStart;
 export const CreateAccnt = CreateAcc;
 export const MyBeers = MyBee;
 export const Subscribe = Subscrib;
