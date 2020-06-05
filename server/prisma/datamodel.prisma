@@ -1,6 +1,7 @@
 type Beer {
   id: ID! @id
   name: String!
+  image: String!
   abv: Int!
   body: String!
   description: String!
@@ -12,7 +13,9 @@ type Beer {
 
 type User {
 	id: ID! @id
-	name: String!
+	firstName: String!
+	lastName: String!
+	zipCode: String!
 	email: String! @unique
 	password: String!
 	beers: [Beer!]!

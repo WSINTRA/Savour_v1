@@ -180,6 +180,8 @@ export type BeerOrderByInput =
   | "id_DESC"
   | "name_ASC"
   | "name_DESC"
+  | "image_ASC"
+  | "image_DESC"
   | "abv_ASC"
   | "abv_DESC"
   | "body_ASC"
@@ -196,8 +198,12 @@ export type VoteOrderByInput = "id_ASC" | "id_DESC";
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
+  | "firstName_ASC"
+  | "firstName_DESC"
+  | "lastName_ASC"
+  | "lastName_DESC"
+  | "zipCode_ASC"
+  | "zipCode_DESC"
   | "email_ASC"
   | "email_DESC"
   | "password_ASC"
@@ -238,6 +244,20 @@ export interface BeerWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
+  image?: Maybe<String>;
+  image_not?: Maybe<String>;
+  image_in?: Maybe<String[] | String>;
+  image_not_in?: Maybe<String[] | String>;
+  image_lt?: Maybe<String>;
+  image_lte?: Maybe<String>;
+  image_gt?: Maybe<String>;
+  image_gte?: Maybe<String>;
+  image_contains?: Maybe<String>;
+  image_not_contains?: Maybe<String>;
+  image_starts_with?: Maybe<String>;
+  image_not_starts_with?: Maybe<String>;
+  image_ends_with?: Maybe<String>;
+  image_not_ends_with?: Maybe<String>;
   abv?: Maybe<Int>;
   abv_not?: Maybe<Int>;
   abv_in?: Maybe<Int[] | Int>;
@@ -314,20 +334,48 @@ export interface UserWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
+  firstName?: Maybe<String>;
+  firstName_not?: Maybe<String>;
+  firstName_in?: Maybe<String[] | String>;
+  firstName_not_in?: Maybe<String[] | String>;
+  firstName_lt?: Maybe<String>;
+  firstName_lte?: Maybe<String>;
+  firstName_gt?: Maybe<String>;
+  firstName_gte?: Maybe<String>;
+  firstName_contains?: Maybe<String>;
+  firstName_not_contains?: Maybe<String>;
+  firstName_starts_with?: Maybe<String>;
+  firstName_not_starts_with?: Maybe<String>;
+  firstName_ends_with?: Maybe<String>;
+  firstName_not_ends_with?: Maybe<String>;
+  lastName?: Maybe<String>;
+  lastName_not?: Maybe<String>;
+  lastName_in?: Maybe<String[] | String>;
+  lastName_not_in?: Maybe<String[] | String>;
+  lastName_lt?: Maybe<String>;
+  lastName_lte?: Maybe<String>;
+  lastName_gt?: Maybe<String>;
+  lastName_gte?: Maybe<String>;
+  lastName_contains?: Maybe<String>;
+  lastName_not_contains?: Maybe<String>;
+  lastName_starts_with?: Maybe<String>;
+  lastName_not_starts_with?: Maybe<String>;
+  lastName_ends_with?: Maybe<String>;
+  lastName_not_ends_with?: Maybe<String>;
+  zipCode?: Maybe<String>;
+  zipCode_not?: Maybe<String>;
+  zipCode_in?: Maybe<String[] | String>;
+  zipCode_not_in?: Maybe<String[] | String>;
+  zipCode_lt?: Maybe<String>;
+  zipCode_lte?: Maybe<String>;
+  zipCode_gt?: Maybe<String>;
+  zipCode_gte?: Maybe<String>;
+  zipCode_contains?: Maybe<String>;
+  zipCode_not_contains?: Maybe<String>;
+  zipCode_starts_with?: Maybe<String>;
+  zipCode_not_starts_with?: Maybe<String>;
+  zipCode_ends_with?: Maybe<String>;
+  zipCode_not_ends_with?: Maybe<String>;
   email?: Maybe<String>;
   email_not?: Maybe<String>;
   email_in?: Maybe<String[] | String>;
@@ -401,6 +449,7 @@ export type VoteWhereUniqueInput = AtLeastOne<{
 export interface BeerCreateInput {
   id?: Maybe<ID_Input>;
   name: String;
+  image: String;
   abv: Int;
   body: String;
   description: String;
@@ -415,7 +464,9 @@ export interface UserCreateOneWithoutBeersInput {
 
 export interface UserCreateWithoutBeersInput {
   id?: Maybe<ID_Input>;
-  name: String;
+  firstName: String;
+  lastName: String;
+  zipCode: String;
   email: String;
   password: String;
   votes?: Maybe<VoteCreateManyWithoutUserInput>;
@@ -439,6 +490,7 @@ export interface BeerCreateOneWithoutVotesInput {
 export interface BeerCreateWithoutVotesInput {
   id?: Maybe<ID_Input>;
   name: String;
+  image: String;
   abv: Int;
   body: String;
   description: String;
@@ -462,7 +514,9 @@ export interface UserCreateOneWithoutVotesInput {
 
 export interface UserCreateWithoutVotesInput {
   id?: Maybe<ID_Input>;
-  name: String;
+  firstName: String;
+  lastName: String;
+  zipCode: String;
   email: String;
   password: String;
   beers?: Maybe<BeerCreateManyWithoutPostedByInput>;
@@ -478,6 +532,7 @@ export interface BeerCreateManyWithoutPostedByInput {
 export interface BeerCreateWithoutPostedByInput {
   id?: Maybe<ID_Input>;
   name: String;
+  image: String;
   abv: Int;
   body: String;
   description: String;
@@ -486,6 +541,7 @@ export interface BeerCreateWithoutPostedByInput {
 
 export interface BeerUpdateInput {
   name?: Maybe<String>;
+  image?: Maybe<String>;
   abv?: Maybe<Int>;
   body?: Maybe<String>;
   description?: Maybe<String>;
@@ -503,7 +559,9 @@ export interface UserUpdateOneWithoutBeersInput {
 }
 
 export interface UserUpdateWithoutBeersDataInput {
-  name?: Maybe<String>;
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  zipCode?: Maybe<String>;
   email?: Maybe<String>;
   password?: Maybe<String>;
   votes?: Maybe<VoteUpdateManyWithoutUserInput>;
@@ -544,6 +602,7 @@ export interface BeerUpdateOneRequiredWithoutVotesInput {
 
 export interface BeerUpdateWithoutVotesDataInput {
   name?: Maybe<String>;
+  image?: Maybe<String>;
   abv?: Maybe<Int>;
   body?: Maybe<String>;
   description?: Maybe<String>;
@@ -620,7 +679,9 @@ export interface UserUpdateOneRequiredWithoutVotesInput {
 }
 
 export interface UserUpdateWithoutVotesDataInput {
-  name?: Maybe<String>;
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  zipCode?: Maybe<String>;
   email?: Maybe<String>;
   password?: Maybe<String>;
   beers?: Maybe<BeerUpdateManyWithoutPostedByInput>;
@@ -655,6 +716,7 @@ export interface BeerUpdateWithWhereUniqueWithoutPostedByInput {
 
 export interface BeerUpdateWithoutPostedByDataInput {
   name?: Maybe<String>;
+  image?: Maybe<String>;
   abv?: Maybe<Int>;
   body?: Maybe<String>;
   description?: Maybe<String>;
@@ -696,6 +758,20 @@ export interface BeerScalarWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
+  image?: Maybe<String>;
+  image_not?: Maybe<String>;
+  image_in?: Maybe<String[] | String>;
+  image_not_in?: Maybe<String[] | String>;
+  image_lt?: Maybe<String>;
+  image_lte?: Maybe<String>;
+  image_gt?: Maybe<String>;
+  image_gte?: Maybe<String>;
+  image_contains?: Maybe<String>;
+  image_not_contains?: Maybe<String>;
+  image_starts_with?: Maybe<String>;
+  image_not_starts_with?: Maybe<String>;
+  image_ends_with?: Maybe<String>;
+  image_not_ends_with?: Maybe<String>;
   abv?: Maybe<Int>;
   abv_not?: Maybe<Int>;
   abv_in?: Maybe<Int[] | Int>;
@@ -760,6 +836,7 @@ export interface BeerUpdateManyWithWhereNestedInput {
 
 export interface BeerUpdateManyDataInput {
   name?: Maybe<String>;
+  image?: Maybe<String>;
   abv?: Maybe<Int>;
   body?: Maybe<String>;
   description?: Maybe<String>;
@@ -778,6 +855,7 @@ export interface VoteUpsertWithWhereUniqueWithoutBeerInput {
 
 export interface BeerUpdateManyMutationInput {
   name?: Maybe<String>;
+  image?: Maybe<String>;
   abv?: Maybe<Int>;
   body?: Maybe<String>;
   description?: Maybe<String>;
@@ -785,7 +863,9 @@ export interface BeerUpdateManyMutationInput {
 
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
-  name: String;
+  firstName: String;
+  lastName: String;
+  zipCode: String;
   email: String;
   password: String;
   beers?: Maybe<BeerCreateManyWithoutPostedByInput>;
@@ -793,7 +873,9 @@ export interface UserCreateInput {
 }
 
 export interface UserUpdateInput {
-  name?: Maybe<String>;
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  zipCode?: Maybe<String>;
   email?: Maybe<String>;
   password?: Maybe<String>;
   beers?: Maybe<BeerUpdateManyWithoutPostedByInput>;
@@ -801,7 +883,9 @@ export interface UserUpdateInput {
 }
 
 export interface UserUpdateManyMutationInput {
-  name?: Maybe<String>;
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  zipCode?: Maybe<String>;
   email?: Maybe<String>;
   password?: Maybe<String>;
 }
@@ -857,6 +941,7 @@ export interface NodeNode {
 export interface Beer {
   id: ID_Output;
   name: String;
+  image: String;
   abv: Int;
   body: String;
   description: String;
@@ -867,6 +952,7 @@ export interface Beer {
 export interface BeerPromise extends Promise<Beer>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  image: () => Promise<String>;
   abv: () => Promise<Int>;
   body: () => Promise<String>;
   description: () => Promise<String>;
@@ -889,6 +975,7 @@ export interface BeerSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
   abv: () => Promise<AsyncIterator<Int>>;
   body: () => Promise<AsyncIterator<String>>;
   description: () => Promise<AsyncIterator<String>>;
@@ -911,6 +998,7 @@ export interface BeerNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  image: () => Promise<String>;
   abv: () => Promise<Int>;
   body: () => Promise<String>;
   description: () => Promise<String>;
@@ -930,14 +1018,18 @@ export interface BeerNullablePromise
 
 export interface User {
   id: ID_Output;
-  name: String;
+  firstName: String;
+  lastName: String;
+  zipCode: String;
   email: String;
   password: String;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  zipCode: () => Promise<String>;
   email: () => Promise<String>;
   password: () => Promise<String>;
   beers: <T = FragmentableArray<Beer>>(args?: {
@@ -964,7 +1056,9 @@ export interface UserSubscription
   extends Promise<AsyncIterator<User>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
+  firstName: () => Promise<AsyncIterator<String>>;
+  lastName: () => Promise<AsyncIterator<String>>;
+  zipCode: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   beers: <T = Promise<AsyncIterator<BeerSubscription>>>(args?: {
@@ -991,7 +1085,9 @@ export interface UserNullablePromise
   extends Promise<User | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  zipCode: () => Promise<String>;
   email: () => Promise<String>;
   password: () => Promise<String>;
   beers: <T = FragmentableArray<Beer>>(args?: {
@@ -1269,6 +1365,7 @@ export interface BeerSubscriptionPayloadSubscription
 export interface BeerPreviousValues {
   id: ID_Output;
   name: String;
+  image: String;
   abv: Int;
   body: String;
   description: String;
@@ -1281,6 +1378,7 @@ export interface BeerPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  image: () => Promise<String>;
   abv: () => Promise<Int>;
   body: () => Promise<String>;
   description: () => Promise<String>;
@@ -1293,6 +1391,7 @@ export interface BeerPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
   abv: () => Promise<AsyncIterator<Int>>;
   body: () => Promise<AsyncIterator<String>>;
   description: () => Promise<AsyncIterator<String>>;
@@ -1327,7 +1426,9 @@ export interface UserSubscriptionPayloadSubscription
 
 export interface UserPreviousValues {
   id: ID_Output;
-  name: String;
+  firstName: String;
+  lastName: String;
+  zipCode: String;
   email: String;
   password: String;
 }
@@ -1336,7 +1437,9 @@ export interface UserPreviousValuesPromise
   extends Promise<UserPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  zipCode: () => Promise<String>;
   email: () => Promise<String>;
   password: () => Promise<String>;
 }
@@ -1345,7 +1448,9 @@ export interface UserPreviousValuesSubscription
   extends Promise<AsyncIterator<UserPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
+  firstName: () => Promise<AsyncIterator<String>>;
+  lastName: () => Promise<AsyncIterator<String>>;
+  zipCode: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
 }

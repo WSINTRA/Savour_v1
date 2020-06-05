@@ -44,6 +44,7 @@ async function signup(parent, args, context, info) {
       const userId = getUserId(context);
       return context.prisma.createBeer({
         name: args.name,
+        image: args.image,
         abv: args.abv,
         description: args.description,
         body: args.body,

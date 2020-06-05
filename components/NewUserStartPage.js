@@ -58,10 +58,12 @@ const NewUserStartPage = (props) =>{
               password={password}
               confirmPass={confirmPass}
               promoCode={promoCode}
+              zipCode={zipCode}
               checkForReadyButton={
                 RegisterFormFunctions.checkForReadyButton
               }
               changeInputText={RegisterFormFunctions.changeTextInput}
+              _confirm={RegisterFormFunctions._confirm}
             />
           )}
         </Stack.Screen>

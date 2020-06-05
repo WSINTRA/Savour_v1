@@ -22,6 +22,7 @@ type BatchPayload {
 type Beer {
   id: ID!
   name: String!
+  image: String!
   abv: Int!
   body: String!
   description: String!
@@ -40,6 +41,7 @@ type BeerConnection {
 input BeerCreateInput {
   id: ID
   name: String!
+  image: String!
   abv: Int!
   body: String!
   description: String!
@@ -60,6 +62,7 @@ input BeerCreateOneWithoutVotesInput {
 input BeerCreateWithoutPostedByInput {
   id: ID
   name: String!
+  image: String!
   abv: Int!
   body: String!
   description: String!
@@ -69,6 +72,7 @@ input BeerCreateWithoutPostedByInput {
 input BeerCreateWithoutVotesInput {
   id: ID
   name: String!
+  image: String!
   abv: Int!
   body: String!
   description: String!
@@ -85,6 +89,8 @@ enum BeerOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  image_ASC
+  image_DESC
   abv_ASC
   abv_DESC
   body_ASC
@@ -100,6 +106,7 @@ enum BeerOrderByInput {
 type BeerPreviousValues {
   id: ID!
   name: String!
+  image: String!
   abv: Int!
   body: String!
   description: String!
@@ -136,6 +143,20 @@ input BeerScalarWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  image: String
+  image_not: String
+  image_in: [String!]
+  image_not_in: [String!]
+  image_lt: String
+  image_lte: String
+  image_gt: String
+  image_gte: String
+  image_contains: String
+  image_not_contains: String
+  image_starts_with: String
+  image_not_starts_with: String
+  image_ends_with: String
+  image_not_ends_with: String
   abv: Int
   abv_not: Int
   abv_in: [Int!]
@@ -213,6 +234,7 @@ input BeerSubscriptionWhereInput {
 
 input BeerUpdateInput {
   name: String
+  image: String
   abv: Int
   body: String
   description: String
@@ -222,6 +244,7 @@ input BeerUpdateInput {
 
 input BeerUpdateManyDataInput {
   name: String
+  image: String
   abv: Int
   body: String
   description: String
@@ -229,6 +252,7 @@ input BeerUpdateManyDataInput {
 
 input BeerUpdateManyMutationInput {
   name: String
+  image: String
   abv: Int
   body: String
   description: String
@@ -260,6 +284,7 @@ input BeerUpdateOneRequiredWithoutVotesInput {
 
 input BeerUpdateWithoutPostedByDataInput {
   name: String
+  image: String
   abv: Int
   body: String
   description: String
@@ -268,6 +293,7 @@ input BeerUpdateWithoutPostedByDataInput {
 
 input BeerUpdateWithoutVotesDataInput {
   name: String
+  image: String
   abv: Int
   body: String
   description: String
@@ -319,6 +345,20 @@ input BeerWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  image: String
+  image_not: String
+  image_in: [String!]
+  image_not_in: [String!]
+  image_lt: String
+  image_lte: String
+  image_gt: String
+  image_gte: String
+  image_contains: String
+  image_not_contains: String
+  image_starts_with: String
+  image_not_starts_with: String
+  image_ends_with: String
+  image_not_ends_with: String
   abv: Int
   abv_not: Int
   abv_in: [Int!]
@@ -446,7 +486,9 @@ type Subscription {
 
 type User {
   id: ID!
-  name: String!
+  firstName: String!
+  lastName: String!
+  zipCode: String!
   email: String!
   password: String!
   beers(where: BeerWhereInput, orderBy: BeerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Beer!]
@@ -461,7 +503,9 @@ type UserConnection {
 
 input UserCreateInput {
   id: ID
-  name: String!
+  firstName: String!
+  lastName: String!
+  zipCode: String!
   email: String!
   password: String!
   beers: BeerCreateManyWithoutPostedByInput
@@ -480,7 +524,9 @@ input UserCreateOneWithoutVotesInput {
 
 input UserCreateWithoutBeersInput {
   id: ID
-  name: String!
+  firstName: String!
+  lastName: String!
+  zipCode: String!
   email: String!
   password: String!
   votes: VoteCreateManyWithoutUserInput
@@ -488,7 +534,9 @@ input UserCreateWithoutBeersInput {
 
 input UserCreateWithoutVotesInput {
   id: ID
-  name: String!
+  firstName: String!
+  lastName: String!
+  zipCode: String!
   email: String!
   password: String!
   beers: BeerCreateManyWithoutPostedByInput
@@ -502,8 +550,12 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
-  name_ASC
-  name_DESC
+  firstName_ASC
+  firstName_DESC
+  lastName_ASC
+  lastName_DESC
+  zipCode_ASC
+  zipCode_DESC
   email_ASC
   email_DESC
   password_ASC
@@ -512,7 +564,9 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
-  name: String!
+  firstName: String!
+  lastName: String!
+  zipCode: String!
   email: String!
   password: String!
 }
@@ -536,7 +590,9 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateInput {
-  name: String
+  firstName: String
+  lastName: String
+  zipCode: String
   email: String
   password: String
   beers: BeerUpdateManyWithoutPostedByInput
@@ -544,7 +600,9 @@ input UserUpdateInput {
 }
 
 input UserUpdateManyMutationInput {
-  name: String
+  firstName: String
+  lastName: String
+  zipCode: String
   email: String
   password: String
 }
@@ -566,14 +624,18 @@ input UserUpdateOneWithoutBeersInput {
 }
 
 input UserUpdateWithoutBeersDataInput {
-  name: String
+  firstName: String
+  lastName: String
+  zipCode: String
   email: String
   password: String
   votes: VoteUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutVotesDataInput {
-  name: String
+  firstName: String
+  lastName: String
+  zipCode: String
   email: String
   password: String
   beers: BeerUpdateManyWithoutPostedByInput
@@ -604,20 +666,48 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
+  firstName: String
+  firstName_not: String
+  firstName_in: [String!]
+  firstName_not_in: [String!]
+  firstName_lt: String
+  firstName_lte: String
+  firstName_gt: String
+  firstName_gte: String
+  firstName_contains: String
+  firstName_not_contains: String
+  firstName_starts_with: String
+  firstName_not_starts_with: String
+  firstName_ends_with: String
+  firstName_not_ends_with: String
+  lastName: String
+  lastName_not: String
+  lastName_in: [String!]
+  lastName_not_in: [String!]
+  lastName_lt: String
+  lastName_lte: String
+  lastName_gt: String
+  lastName_gte: String
+  lastName_contains: String
+  lastName_not_contains: String
+  lastName_starts_with: String
+  lastName_not_starts_with: String
+  lastName_ends_with: String
+  lastName_not_ends_with: String
+  zipCode: String
+  zipCode_not: String
+  zipCode_in: [String!]
+  zipCode_not_in: [String!]
+  zipCode_lt: String
+  zipCode_lte: String
+  zipCode_gt: String
+  zipCode_gte: String
+  zipCode_contains: String
+  zipCode_not_contains: String
+  zipCode_starts_with: String
+  zipCode_not_starts_with: String
+  zipCode_ends_with: String
+  zipCode_not_ends_with: String
   email: String
   email_not: String
   email_in: [String!]

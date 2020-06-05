@@ -4,7 +4,15 @@ import { offWhite, dimOrange, buttonGrey, borderGrey, buttonBlack, backgroundWhi
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-
+export const drawerStyles = StyleSheet.create({
+  label:  {
+    textTransform: "uppercase",
+    letterSpacing: 3,
+    fontSize: 12,
+    marginTop:-10,
+    marginBottom:-10,
+  },
+})
 export const mainStyles = StyleSheet.create({
   mainTitle: {
     marginTop: 10,
