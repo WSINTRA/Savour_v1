@@ -1,8 +1,8 @@
 import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { CurrentBeers, YourCrates, Subscribe, MyBeers } from "../comps";
+import { CurrentBeers, YourCrates, Subscribe, MyBeers } from "../../comps";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { buttonBlack } from "../colors";
+import { buttonBlack } from "../../colors";
 
 function HomeScreen() {
   const Tab = createBottomTabNavigator();

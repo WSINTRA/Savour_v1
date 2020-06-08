@@ -1,9 +1,9 @@
 import React from "react";
-import { mainStyles } from '../styles/global'
+import { mainStyles } from '../../styles/global'
 import { View, Text, } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from "@react-navigation/native";
-import { buttonBlack, offWhite } from '../colors';
+import { buttonBlack, offWhite } from '../../colors';
 
 export default function MainTitle(props) {
   const iconSize = 32;

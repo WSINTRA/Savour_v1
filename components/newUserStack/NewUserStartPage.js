@@ -6,7 +6,7 @@ import {
     Welcome,
     ZipConfirm,
     CreateAccnt,
-  } from "../comps";
+  } from "../../comps";
 
 const NewUserStartPage = (props) =>{
   const Stack = createStackNavigator();

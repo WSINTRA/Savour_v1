@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { formStyles } from "../styles/global";
+import { formStyles } from "../../styles/global";
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   Platform,
   TextInput,
 } from "react-native";
-import { offWhite, dimOrange } from "../colors";
+import { offWhite, dimOrange } from "../../colors";
 
 function zipConfirm(props) {
   const { zipCode, buttonStyle, changeInputText, changeButtonStyle, checkForReadyButton } = props;

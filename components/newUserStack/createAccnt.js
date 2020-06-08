@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { registerStyle, formStyles } from "../styles/global";
+import { registerStyle, formStyles } from "../../styles/global";
 import { useNavigation } from "@react-navigation/native";
 import {
   View,
@@ -10,7 +10,7 @@ import {
   TextInput,
   ScrollView,
 } from "react-native";
-import { offWhite, dimOrange, borderGrey } from "../colors";
+import { offWhite, dimOrange, borderGrey } from "../../colors";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 

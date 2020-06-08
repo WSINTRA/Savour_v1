@@ -1,5 +1,5 @@
 import * as React from "react";
-import { MainTitle } from '../comps';
+import { MainTitle } from '../../comps';
 import { View, Text } from "react-native";
 
 function currentBeers() {

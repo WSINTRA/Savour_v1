@@ -1,5 +1,5 @@
 import React from "react";
-import { formStyles } from "../styles/global";
+import { formStyles } from "../../styles/global";
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   ImageBackground,
   StyleSheet,
 } from "react-native";
-import savourBG from "../assets/savourBG.png";
+import savourBG from "../../assets/savourBG.png";
 
 const Welcome = ({ navigation }) => {
   return (
@@ -18,21 +18,21 @@ const Welcome = ({ navigation }) => {
       ></ImageBackground>
       <View style={formStyles.buttonBound}>
         <TouchableHighlight
-        onPress={() =>
-          navigation.navigate('Disclaimer', { name: 'Disclaimer' })
-        }>
+          onPress={() =>
+            navigation.navigate("Disclaimer", { name: "Disclaimer" })
+          }
+        >
           <Text style={[formStyles.signUpButton, { color: "whitesmoke" }]}>
             SIGN UP
           </Text>
         </TouchableHighlight>
 
-        <TouchableHighlight 
-        onPress={() =>
-          navigation.navigate('LoginForm', { name: 'LoginForm' })
-        }>
-          <Text style={formStyles.loginButton}>
-            LOGIN
-            </Text>
+        <TouchableHighlight
+          onPress={() =>
+            navigation.navigate("LoginForm", { name: "LoginForm" })
+          }
+        >
+          <Text style={formStyles.loginButton}>LOGIN</Text>
         </TouchableHighlight>
       </View>
     </View>

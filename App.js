@@ -11,7 +11,7 @@ import { AUTH_TOKEN } from "./constants";
  *  - First: Import them into components.js
  *  - Then: add them to the import statement below
  */
-import { NewUserStartPage, ReturningUser } from "./comps";
+import { NewUserStartStack, ReturningUserStack } from "./comps";
 ////////////////////////////////////////////////////////////////
 //Wraps the app so that a navigation object can be used for screen navigations
 ////////////////////////////////////////////////////////////////
@@ -193,9 +193,9 @@ class App extends React.Component {
         <NavigationContainer>
           <>
             {success ? (
-              <ReturningUser logout={this.UserFunctions.logout} />
+              <ReturningUserStack logout={this.UserFunctions.logout} />
             ) : (
-              <NewUserStartPage
+              <NewUserStartStack
                 {...this.state}
                 LoginFormFunctions={this.LoginFormFunctions}
                 RegisterFormFunctions={this.RegisterFormFunctions}
