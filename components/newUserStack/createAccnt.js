@@ -5,6 +5,7 @@ import {
   View,
   Text,
   TouchableHighlight,
+  TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
   TextInput,
@@ -148,12 +149,14 @@ function CreateAccnt(props) {
           <View>
             <Text style={[registerStyle.header, { fontSize: 15 }]}>
               Already have an account?{" "}
-              <Text
+              <TouchableOpacity
                 style={{ color: dimOrange }}
                 onPress={() => navigation.navigate("Welcome")}
               >
+                <Text>
                 Login
-              </Text>
+                </Text>
+              </TouchableOpacity>
             </Text>
           </View>
         </ScrollView>
@@ -164,9 +167,11 @@ function CreateAccnt(props) {
       >
         {(mutation) => (
           <View style={formStyles.formBound}>
+             <TouchableOpacity>
             <Text onPress={mutation} style={[buttonStyle, formStyles.login]}>
               CONTINUE
             </Text>
+            </TouchableOpacity>
           </View>
         )}
       </Mutation>

@@ -5,6 +5,7 @@ import {
   View,
   Text,
   TouchableHighlight,
+  TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
   TextInput,
@@ -61,8 +62,10 @@ function zipConfirm(props) {
           onEndEditing={() => setlineStyle({ borderBottomColor: offWhite })}
         />
         <View style={formStyles.formBound}>
+        <TouchableOpacity>
           <Text style={[buttonStyle, formStyles.login]}
           onPress={confirm ? ()=> {changeButtonStyle();navigation.push("CreateAccnt")} : null } >CONTINUE</Text>
+          </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
     </>

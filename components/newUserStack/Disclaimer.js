@@ -4,6 +4,7 @@ import {
   View,
   Text,
   TouchableHighlight,
+  TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
@@ -39,12 +40,15 @@ function Disclaimer({ navigation }) {
         </TouchableHighlight>
         <Text style={formStyles.disclaimer}>ARE YOU 21?</Text>
         <View style={formStyles.buttonBound}>
+          <TouchableOpacity>
           <Text
             style={formStyles.disclaimerButton}
             onPress={() => navigation.goBack()}
           >
             NO
           </Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
           <Text
             style={formStyles.disclaimerButton}
             onPress={() =>
@@ -53,6 +57,7 @@ function Disclaimer({ navigation }) {
           >
             YES
           </Text>
+          </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
     </>

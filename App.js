@@ -86,7 +86,7 @@ class App extends React.Component {
     promoCode: "",
     zipCode: "",
     //keep this as true during dev if you don't want to keep loggin in
-    success: false,
+    success: true,
     username: "",
   };
   ////////////////////////////////////////////////////////////////
@@ -193,7 +193,9 @@ class App extends React.Component {
         <NavigationContainer>
           <>
             {success ? (
+              
               <ReturningUserStack logout={this.UserFunctions.logout} />
+              
             ) : (
               <NewUserStartStack
                 {...this.state}
