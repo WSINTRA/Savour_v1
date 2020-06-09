@@ -29,7 +29,6 @@ function currentBeers() {
   return (
     <FadeInView>
       <MainTitle headingTitle={"CURRENT BEERS"} rightIcon={"bell-outline"} />
-
       <ScrollingBeers />
     </FadeInView>
   );
@@ -182,6 +181,7 @@ const styles = StyleSheet.create({
   cardDetails: {
     flex: 1,
     justifyContent: "flex-start",
+    paddingLeft: 20,
   },
   floatingShare: {
     position: "absolute",
