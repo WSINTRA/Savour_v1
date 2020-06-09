@@ -14,7 +14,15 @@ import {
   Animated,
   useWindowDimensions,
 } from "react-native";
-import { offWhite, dimOrange,buttonGrey,borderGrey } from "../../colors";
+import {
+  offWhite,
+  dimOrange,
+  buttonGrey,
+  borderGrey,
+  buttonBlack,
+  buttonTextGrey,
+} from "../../colors";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 const { height, width } = Dimensions.get("window");
 
 function currentBeers() {
@@ -64,14 +72,13 @@ const MockData = [
 
 function ScrollingBeers() {
   const scrollX = useRef(new Animated.Value(0)).current;
-  const { width: windowWidth } = useWindowDimensions();
-  const { height: windowHeight } = useWindowDimensions();
+  //   const { width: windowWidth } = useWindowDimensions();
+  //   const { height: windowHeight } = useWindowDimensions();
   return (
     <SafeAreaView>
       <View style={styles.scrollContainer}>
         <ScrollView
           horizontal={true}
-          style={styles.scrollViewStyle}
           pagingEnabled
           showsHorizontalScrollIndicator={false}
           onScroll={Animated.event([
@@ -88,18 +95,55 @@ function ScrollingBeers() {
           {MockData.map((prodCard, imageIndex) => {
             return (
               <View
-                style={{ width: windowWidth, height: 545 }}
+                style={{ width: width, height: height - 120 }}
                 key={imageIndex}
               >
                 <ScrollView>
-                  <Image source={{ uri: prodCard.image }} style={styles.card} />
-                  <Text style={styles.infoText}>{prodCard.title}</Text>
-                  <Text>{prodCard.subtitle}</Text>
-                  <Text>{prodCard.description}</Text>
-                  <Text>{prodCard.description}</Text>
-                  <Text>{prodCard.description}</Text>
+                  <Image
+                    source={{ uri: prodCard.image }}
+                    style={styles.cardImage}
+                  />
+
+                  <View style={styles.cardDetails}>
+                    <View style={styles.floatingShare}>
+                      <MaterialCommunityIcons
+                        style={{ color: offWhite }}
+                        name="share-variant"
+                        size={32}
+                      />
+                    </View>
+                    <View>
+                      <Text style={styles.infoTitle}>{prodCard.title}</Text>
+                    </View>
+                    <View>
+                      <Text style={styles.infoSubtitle}>
+                        {prodCard.subtitle}
+                      </Text>
+                    </View>
+                    <View style={styles.infoDescription}>
+                      <Text>{prodCard.description}</Text>
+                    </View>
+                  </View>
                 </ScrollView>
-                <View style={[styles.cardButton, prodCard.availability == "SOLD OUT" ? {backgroundColor:borderGrey} : {backgroundColor:dimOrange} ]}><Text style={prodCard.availability == "SOLD OUT" ? {color:buttonGrey} : {color:offWhite} } >{prodCard.availability}</Text></View>
+                <View
+                  style={[
+                    styles.cardButton,
+                    prodCard.availability == "SOLD OUT"
+                      ? { backgroundColor: borderGrey }
+                      : { backgroundColor: dimOrange },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      prodCard.availability == "SOLD OUT"
+                        ? { color: buttonGrey }
+                        : { color: offWhite },
+                      styles.cardButtonText,
+                    ]}
+                  >
+                    {prodCard.availability}
+                  </Text>
+                </View>
               </View>
             );
           })}
@@ -109,11 +153,11 @@ function ScrollingBeers() {
           {MockData.map((image, imageIndex) => {
             const color = scrollX.interpolate({
               inputRange: [
-                windowWidth * (imageIndex - 1),
-                windowWidth * imageIndex,
-                windowWidth * (imageIndex + 1),
+                width * (imageIndex - 1),
+                width * imageIndex,
+                width * (imageIndex + 1),
               ],
-              outputRange: ["white", "black", "white"],
+              outputRange: [buttonTextGrey, buttonBlack, buttonTextGrey],
               extrapolate: "clamp",
             });
             return (
@@ -135,20 +179,38 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
   },
+  cardDetails: {
+    flex: 1,
+    justifyContent: "flex-start",
+  },
+  floatingShare: {
+    position: "absolute",
+    right: 30,
+    top: -20,
+    backgroundColor: dimOrange,
+    borderRadius: 50,
+    height: 50,
+    width: 50,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   cardButton: {
     backgroundColor: dimOrange,
     alignItems: "center",
     alignSelf: "center",
     alignContent: "center",
     justifyContent: "center",
-    letterSpacing: 3,
     width: width,
-    height: 40,
+    height: 50,
     textAlign: "center",
     flexDirection: "row",
     margin: "auto",
   },
-  card: {
+  cardButtonText: {
+    letterSpacing: 3,
+    fontWeight: "bold",
+  },
+  cardImage: {
     width: 400,
     height: 350,
     overflow: "hidden",
@@ -161,10 +223,22 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 5,
   },
-  infoText: {
-    color: "white",
+  infoTitle: {
+    paddingTop: 30,
+    textTransform: "uppercase",
+    color: buttonGrey,
     fontSize: 16,
     fontWeight: "bold",
+  },
+  infoSubtitle: {
+    paddingTop: 10,
+    textTransform: "uppercase",
+    color: buttonGrey,
+    fontSize: 16,
+  },
+  infoDescription: {
+    paddingTop: 10,
+    color: buttonGrey,
   },
   normalDot: {
     height: 8,
@@ -175,10 +249,10 @@ const styles = StyleSheet.create({
   },
   indicatorContainer: {
     position: "absolute",
-    backgroundColor: "rgba(255,255,255, 0.5)",
+    backgroundColor: "rgba(255,255,255, 0.8)",
     width: width,
     height: 12,
-    bottom:42,
+    bottom: 52,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
