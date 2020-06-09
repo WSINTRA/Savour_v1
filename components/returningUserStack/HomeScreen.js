@@ -1,7 +1,7 @@
 import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { CurrentBeers, YourCrates, Subscribe, MyBeers } from "../../comps";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons, Ionicons, Foundation} from "@expo/vector-icons";
 import { buttonBlack } from "../../colors";
 
 function HomeScreen() {
@@ -22,7 +22,7 @@ function HomeScreen() {
         options={{
           tabBarLabel: "Current Beers",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons 
+            <Foundation
             name="home" 
             color={color} 
             size={iconSize} />
@@ -49,9 +49,10 @@ function HomeScreen() {
         options={{
           tabBarLabel: "Subscribe",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
+            
+            <Ionicons
               color={color}
-              name="autorenew"
+              name="ios-sync"
               size={iconSize}
             />
           ),
@@ -63,9 +64,9 @@ function HomeScreen() {
         options={{
           tabBarLabel: "My Beers",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons 
+            <MaterialIcons 
             color={color} 
-            name="star" 
+            name="star-border" 
             size={iconSize} />
           ),
         }}

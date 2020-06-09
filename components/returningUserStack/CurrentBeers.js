@@ -2,7 +2,7 @@
 import { MainTitle } from "../../comps";
 // import { View, Text } from "react-native";
 import { FadeInView } from "../../fadeInView";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -23,6 +23,9 @@ import {
   buttonTextGrey,
 } from "../../colors";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
+
 const { height, width } = Dimensions.get("window");
 
 function currentBeers() {
@@ -35,44 +38,27 @@ function currentBeers() {
 }
 export default currentBeers;
 
-//This component has to render a slide paginated component with different beers available.
-//Begin by creating 2 mock beers with an image, a title, a subtitle and a description
-//Once mock data is created implement a sliding navigation
+//TODO : Build out share button
 
-const MockData = [
+const BEER_QUERY = gql`
   {
-    title: "Mock Beer 1",
-    subtitle: "Mock Beer 1 made at home",
-    availability: "GET IT",
-    description:
-      "lorem ipsum laddee laddaaalorem ipsum laddee laddaaalorem ipsum laddee laddaaalorem ipsum laddee laddaaalorem ipsum laddee laddaaalorem ipsum laddee laddaaalorem ipsum laddee laddaaalorem ipsum laddee laddaaalorem ipsum laddee laddaaalorem ipsum laddee laddaaalorem ipsum laddee laddaaalorem ipsum laddee laddaaa",
-    image:
-      "https://media1.fdncms.com/pittsburgh/imager/u/original/16003077/pittsburghrhythmandbooze.jpg",
-  },
-  {
-    title: "Mock Beer 2",
-    subtitle: "Mock Beer 2 made in anothe rplace",
-    availability: "SOLD OUT",
-    description:
-      "ANything goesANything goesANything goesANything goesANything goesANything goesANything goesANything goesANything goesANything goesANything goesANything goes",
-    image:
-      "https://9b16f79ca967fd0708d1-2713572fef44aa49ec323e813b06d2d9.ssl.cf2.rackcdn.com/1140x_a10-7_cTC/Dancing-Gnome-2-1580417336.jpg",
-  },
-  {
-    title: "Mock Beer 3",
-    subtitle: "Mock Beer 3 made in anothe rplace",
-    availability: "SOLD OUT",
-    description:
-      "ANything goesANything goesANything goesANything goesANything goesANything goesANything goesANything goesANything goesANything goesANything goesANything goes",
-    image:
-      "https://9b16f79ca967fd0708d1-2713572fef44aa49ec323e813b06d2d9.ssl.cf2.rackcdn.com/1140x_a10-7_cTC/Dancing-Gnome-2-1580417336.jpg",
-  },
-];
+    product(filter: "") {
+      beers {
+        name
+        image
+        abv
+        body
+        description
+        notes
+        availability
+      }
+    }
+  }
+`;
 
 function ScrollingBeers() {
   const scrollX = useRef(new Animated.Value(0)).current;
-  //   const { width: windowWidth } = useWindowDimensions();
-  //   const { height: windowHeight } = useWindowDimensions();
+  const [beerState, setBeersState] = useState([{ name: "Loading" }]);
   return (
     <SafeAreaView>
       <View style={styles.scrollContainer}>
@@ -91,7 +77,7 @@ function ScrollingBeers() {
           ])}
           scrollEventThrottle={1}
         >
-          {MockData.map((prodCard, imageIndex) => {
+          {beerState.map((prodCard, imageIndex) => {
             return (
               <View
                 style={{ width: width, height: height - 120 }}
@@ -105,6 +91,7 @@ function ScrollingBeers() {
 
                   <View style={styles.cardDetails}>
                     <View style={styles.floatingShare}>
+                      {/* Build out this share function so it shares the current Beer/product */}
                       <MaterialCommunityIcons
                         style={{ color: offWhite }}
                         name="share-variant"
@@ -112,66 +99,84 @@ function ScrollingBeers() {
                       />
                     </View>
                     <View>
-                      <Text style={styles.infoTitle}>{prodCard.title}</Text>
+                      <Text style={styles.infoTitle}>{prodCard.name}</Text>
                     </View>
                     <View>
-                      <Text style={styles.infoSubtitle}>
-                        {prodCard.subtitle}
-                      </Text>
+                      <Text style={styles.infoSubtitle}>{prodCard.body}</Text>
+                      <Text>ABV: {prodCard.abv}</Text>
                     </View>
                     <View style={styles.infoDescription}>
                       <Text>{prodCard.description}</Text>
+                    </View>
+                    <View style={styles.infoDescription}>
+                      <Text>{prodCard.notes}</Text>
                     </View>
                   </View>
                 </ScrollView>
                 <View
                   style={[
                     styles.cardButton,
-                    prodCard.availability == "SOLD OUT"
-                      ? { backgroundColor: borderGrey }
-                      : { backgroundColor: dimOrange },
+                    prodCard.availability
+                      ? { backgroundColor: dimOrange }
+                      : { backgroundColor: buttonTextGrey },
                   ]}
                 >
                   <Text
                     style={[
-                      prodCard.availability == "SOLD OUT"
+                      prodCard.availability
                         ? { color: buttonGrey }
                         : { color: offWhite },
                       styles.cardButtonText,
                     ]}
                   >
-                    {prodCard.availability}
+                    {prodCard.availability ? "GET IT" : "SOLD OUT"}
                   </Text>
                 </View>
               </View>
             );
           })}
+          <Query query={BEER_QUERY}>
+            {({ loading, error, data }) => {
+              if (loading)
+                return (
+                  <View>
+                    <Text>Fetching</Text>
+                  </View>
+                );
+              if (error) return <Text>Error{console.log(error)}</Text>;
+              const productData = data.product.beers;
+              setBeersState(productData);
+              return null;
+            }}
+          </Query>
         </ScrollView>
 
         <View style={styles.indicatorContainer}>
-          {MockData.map((image, imageIndex) => {
-            const color = scrollX.interpolate({
-              inputRange: [
-                width * (imageIndex - 1),
-                width * imageIndex,
-                width * (imageIndex + 1),
-              ],
-              outputRange: [buttonTextGrey, buttonBlack, buttonTextGrey],
-              extrapolate: "clamp",
-            });
-            return (
-              <Animated.View
-                key={imageIndex}
-                style={[styles.normalDot, { backgroundColor: color }]}
-              />
-            );
-          })}
+          {beerState
+            ? beerState.map((image, imageIndex) => {
+                const color = scrollX.interpolate({
+                  inputRange: [
+                    width * (imageIndex - 1),
+                    width * imageIndex,
+                    width * (imageIndex + 1),
+                  ],
+                  outputRange: [buttonTextGrey, buttonBlack, buttonTextGrey],
+                  extrapolate: "clamp",
+                });
+                return (
+                  <Animated.View
+                    key={imageIndex}
+                    style={[styles.normalDot, { backgroundColor: color }]}
+                  />
+                );
+              })
+            : null}
         </View>
       </View>
     </SafeAreaView>
   );
 }
-
+//Put this styleSheet into the global.js and change references to styles in the components
 const styles = StyleSheet.create({
   scrollContainer: {
     backgroundColor: offWhite,
@@ -182,6 +187,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     paddingLeft: 20,
+    paddingRight: 20,
   },
   floatingShare: {
     position: "absolute",

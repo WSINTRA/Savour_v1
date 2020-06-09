@@ -23,9 +23,11 @@ type Beer {
   id: ID!
   name: String!
   image: String!
-  abv: Int!
+  availability: Boolean!
+  abv: Float!
   body: String!
   description: String!
+  notes: String!
   postedBy: User
   votes(where: VoteWhereInput, orderBy: VoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vote!]
   createdAt: DateTime!
@@ -42,9 +44,11 @@ input BeerCreateInput {
   id: ID
   name: String!
   image: String!
-  abv: Int!
+  availability: Boolean!
+  abv: Float!
   body: String!
   description: String!
+  notes: String!
   postedBy: UserCreateOneWithoutBeersInput
   votes: VoteCreateManyWithoutBeerInput
 }
@@ -63,9 +67,11 @@ input BeerCreateWithoutPostedByInput {
   id: ID
   name: String!
   image: String!
-  abv: Int!
+  availability: Boolean!
+  abv: Float!
   body: String!
   description: String!
+  notes: String!
   votes: VoteCreateManyWithoutBeerInput
 }
 
@@ -73,9 +79,11 @@ input BeerCreateWithoutVotesInput {
   id: ID
   name: String!
   image: String!
-  abv: Int!
+  availability: Boolean!
+  abv: Float!
   body: String!
   description: String!
+  notes: String!
   postedBy: UserCreateOneWithoutBeersInput
 }
 
@@ -91,12 +99,16 @@ enum BeerOrderByInput {
   name_DESC
   image_ASC
   image_DESC
+  availability_ASC
+  availability_DESC
   abv_ASC
   abv_DESC
   body_ASC
   body_DESC
   description_ASC
   description_DESC
+  notes_ASC
+  notes_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -107,9 +119,11 @@ type BeerPreviousValues {
   id: ID!
   name: String!
   image: String!
-  abv: Int!
+  availability: Boolean!
+  abv: Float!
   body: String!
   description: String!
+  notes: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -157,14 +171,16 @@ input BeerScalarWhereInput {
   image_not_starts_with: String
   image_ends_with: String
   image_not_ends_with: String
-  abv: Int
-  abv_not: Int
-  abv_in: [Int!]
-  abv_not_in: [Int!]
-  abv_lt: Int
-  abv_lte: Int
-  abv_gt: Int
-  abv_gte: Int
+  availability: Boolean
+  availability_not: Boolean
+  abv: Float
+  abv_not: Float
+  abv_in: [Float!]
+  abv_not_in: [Float!]
+  abv_lt: Float
+  abv_lte: Float
+  abv_gt: Float
+  abv_gte: Float
   body: String
   body_not: String
   body_in: [String!]
@@ -193,6 +209,20 @@ input BeerScalarWhereInput {
   description_not_starts_with: String
   description_ends_with: String
   description_not_ends_with: String
+  notes: String
+  notes_not: String
+  notes_in: [String!]
+  notes_not_in: [String!]
+  notes_lt: String
+  notes_lte: String
+  notes_gt: String
+  notes_gte: String
+  notes_contains: String
+  notes_not_contains: String
+  notes_starts_with: String
+  notes_not_starts_with: String
+  notes_ends_with: String
+  notes_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -235,9 +265,11 @@ input BeerSubscriptionWhereInput {
 input BeerUpdateInput {
   name: String
   image: String
-  abv: Int
+  availability: Boolean
+  abv: Float
   body: String
   description: String
+  notes: String
   postedBy: UserUpdateOneWithoutBeersInput
   votes: VoteUpdateManyWithoutBeerInput
 }
@@ -245,17 +277,21 @@ input BeerUpdateInput {
 input BeerUpdateManyDataInput {
   name: String
   image: String
-  abv: Int
+  availability: Boolean
+  abv: Float
   body: String
   description: String
+  notes: String
 }
 
 input BeerUpdateManyMutationInput {
   name: String
   image: String
-  abv: Int
+  availability: Boolean
+  abv: Float
   body: String
   description: String
+  notes: String
 }
 
 input BeerUpdateManyWithoutPostedByInput {
@@ -285,18 +321,22 @@ input BeerUpdateOneRequiredWithoutVotesInput {
 input BeerUpdateWithoutPostedByDataInput {
   name: String
   image: String
-  abv: Int
+  availability: Boolean
+  abv: Float
   body: String
   description: String
+  notes: String
   votes: VoteUpdateManyWithoutBeerInput
 }
 
 input BeerUpdateWithoutVotesDataInput {
   name: String
   image: String
-  abv: Int
+  availability: Boolean
+  abv: Float
   body: String
   description: String
+  notes: String
   postedBy: UserUpdateOneWithoutBeersInput
 }
 
@@ -359,14 +399,16 @@ input BeerWhereInput {
   image_not_starts_with: String
   image_ends_with: String
   image_not_ends_with: String
-  abv: Int
-  abv_not: Int
-  abv_in: [Int!]
-  abv_not_in: [Int!]
-  abv_lt: Int
-  abv_lte: Int
-  abv_gt: Int
-  abv_gte: Int
+  availability: Boolean
+  availability_not: Boolean
+  abv: Float
+  abv_not: Float
+  abv_in: [Float!]
+  abv_not_in: [Float!]
+  abv_lt: Float
+  abv_lte: Float
+  abv_gt: Float
+  abv_gte: Float
   body: String
   body_not: String
   body_in: [String!]
@@ -395,6 +437,20 @@ input BeerWhereInput {
   description_not_starts_with: String
   description_ends_with: String
   description_not_ends_with: String
+  notes: String
+  notes_not: String
+  notes_in: [String!]
+  notes_not_in: [String!]
+  notes_lt: String
+  notes_lte: String
+  notes_gt: String
+  notes_gte: String
+  notes_contains: String
+  notes_not_contains: String
+  notes_starts_with: String
+  notes_not_starts_with: String
+  notes_ends_with: String
+  notes_not_ends_with: String
   postedBy: UserWhereInput
   votes_every: VoteWhereInput
   votes_some: VoteWhereInput

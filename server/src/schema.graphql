@@ -21,12 +21,14 @@ type Beer {
   id: ID! 
   name: String!
   image: String!
-  abv: Int!
-  body: String!
+  abv: Float!
+  body: String
+  availability: Boolean!
   votes: [Vote!]!
 	postedBy: User
   createdAt: DateTime!
   description: String!
+  notes: String!
 }
 
 type AuthPayload {

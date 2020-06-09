@@ -182,12 +182,16 @@ export type BeerOrderByInput =
   | "name_DESC"
   | "image_ASC"
   | "image_DESC"
+  | "availability_ASC"
+  | "availability_DESC"
   | "abv_ASC"
   | "abv_DESC"
   | "body_ASC"
   | "body_DESC"
   | "description_ASC"
   | "description_DESC"
+  | "notes_ASC"
+  | "notes_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -258,14 +262,16 @@ export interface BeerWhereInput {
   image_not_starts_with?: Maybe<String>;
   image_ends_with?: Maybe<String>;
   image_not_ends_with?: Maybe<String>;
-  abv?: Maybe<Int>;
-  abv_not?: Maybe<Int>;
-  abv_in?: Maybe<Int[] | Int>;
-  abv_not_in?: Maybe<Int[] | Int>;
-  abv_lt?: Maybe<Int>;
-  abv_lte?: Maybe<Int>;
-  abv_gt?: Maybe<Int>;
-  abv_gte?: Maybe<Int>;
+  availability?: Maybe<Boolean>;
+  availability_not?: Maybe<Boolean>;
+  abv?: Maybe<Float>;
+  abv_not?: Maybe<Float>;
+  abv_in?: Maybe<Float[] | Float>;
+  abv_not_in?: Maybe<Float[] | Float>;
+  abv_lt?: Maybe<Float>;
+  abv_lte?: Maybe<Float>;
+  abv_gt?: Maybe<Float>;
+  abv_gte?: Maybe<Float>;
   body?: Maybe<String>;
   body_not?: Maybe<String>;
   body_in?: Maybe<String[] | String>;
@@ -294,6 +300,20 @@ export interface BeerWhereInput {
   description_not_starts_with?: Maybe<String>;
   description_ends_with?: Maybe<String>;
   description_not_ends_with?: Maybe<String>;
+  notes?: Maybe<String>;
+  notes_not?: Maybe<String>;
+  notes_in?: Maybe<String[] | String>;
+  notes_not_in?: Maybe<String[] | String>;
+  notes_lt?: Maybe<String>;
+  notes_lte?: Maybe<String>;
+  notes_gt?: Maybe<String>;
+  notes_gte?: Maybe<String>;
+  notes_contains?: Maybe<String>;
+  notes_not_contains?: Maybe<String>;
+  notes_starts_with?: Maybe<String>;
+  notes_not_starts_with?: Maybe<String>;
+  notes_ends_with?: Maybe<String>;
+  notes_not_ends_with?: Maybe<String>;
   postedBy?: Maybe<UserWhereInput>;
   votes_every?: Maybe<VoteWhereInput>;
   votes_some?: Maybe<VoteWhereInput>;
@@ -450,9 +470,11 @@ export interface BeerCreateInput {
   id?: Maybe<ID_Input>;
   name: String;
   image: String;
-  abv: Int;
+  availability: Boolean;
+  abv: Float;
   body: String;
   description: String;
+  notes: String;
   postedBy?: Maybe<UserCreateOneWithoutBeersInput>;
   votes?: Maybe<VoteCreateManyWithoutBeerInput>;
 }
@@ -491,9 +513,11 @@ export interface BeerCreateWithoutVotesInput {
   id?: Maybe<ID_Input>;
   name: String;
   image: String;
-  abv: Int;
+  availability: Boolean;
+  abv: Float;
   body: String;
   description: String;
+  notes: String;
   postedBy?: Maybe<UserCreateOneWithoutBeersInput>;
 }
 
@@ -533,18 +557,22 @@ export interface BeerCreateWithoutPostedByInput {
   id?: Maybe<ID_Input>;
   name: String;
   image: String;
-  abv: Int;
+  availability: Boolean;
+  abv: Float;
   body: String;
   description: String;
+  notes: String;
   votes?: Maybe<VoteCreateManyWithoutBeerInput>;
 }
 
 export interface BeerUpdateInput {
   name?: Maybe<String>;
   image?: Maybe<String>;
-  abv?: Maybe<Int>;
+  availability?: Maybe<Boolean>;
+  abv?: Maybe<Float>;
   body?: Maybe<String>;
   description?: Maybe<String>;
+  notes?: Maybe<String>;
   postedBy?: Maybe<UserUpdateOneWithoutBeersInput>;
   votes?: Maybe<VoteUpdateManyWithoutBeerInput>;
 }
@@ -603,9 +631,11 @@ export interface BeerUpdateOneRequiredWithoutVotesInput {
 export interface BeerUpdateWithoutVotesDataInput {
   name?: Maybe<String>;
   image?: Maybe<String>;
-  abv?: Maybe<Int>;
+  availability?: Maybe<Boolean>;
+  abv?: Maybe<Float>;
   body?: Maybe<String>;
   description?: Maybe<String>;
+  notes?: Maybe<String>;
   postedBy?: Maybe<UserUpdateOneWithoutBeersInput>;
 }
 
@@ -717,9 +747,11 @@ export interface BeerUpdateWithWhereUniqueWithoutPostedByInput {
 export interface BeerUpdateWithoutPostedByDataInput {
   name?: Maybe<String>;
   image?: Maybe<String>;
-  abv?: Maybe<Int>;
+  availability?: Maybe<Boolean>;
+  abv?: Maybe<Float>;
   body?: Maybe<String>;
   description?: Maybe<String>;
+  notes?: Maybe<String>;
   votes?: Maybe<VoteUpdateManyWithoutBeerInput>;
 }
 
@@ -772,14 +804,16 @@ export interface BeerScalarWhereInput {
   image_not_starts_with?: Maybe<String>;
   image_ends_with?: Maybe<String>;
   image_not_ends_with?: Maybe<String>;
-  abv?: Maybe<Int>;
-  abv_not?: Maybe<Int>;
-  abv_in?: Maybe<Int[] | Int>;
-  abv_not_in?: Maybe<Int[] | Int>;
-  abv_lt?: Maybe<Int>;
-  abv_lte?: Maybe<Int>;
-  abv_gt?: Maybe<Int>;
-  abv_gte?: Maybe<Int>;
+  availability?: Maybe<Boolean>;
+  availability_not?: Maybe<Boolean>;
+  abv?: Maybe<Float>;
+  abv_not?: Maybe<Float>;
+  abv_in?: Maybe<Float[] | Float>;
+  abv_not_in?: Maybe<Float[] | Float>;
+  abv_lt?: Maybe<Float>;
+  abv_lte?: Maybe<Float>;
+  abv_gt?: Maybe<Float>;
+  abv_gte?: Maybe<Float>;
   body?: Maybe<String>;
   body_not?: Maybe<String>;
   body_in?: Maybe<String[] | String>;
@@ -808,6 +842,20 @@ export interface BeerScalarWhereInput {
   description_not_starts_with?: Maybe<String>;
   description_ends_with?: Maybe<String>;
   description_not_ends_with?: Maybe<String>;
+  notes?: Maybe<String>;
+  notes_not?: Maybe<String>;
+  notes_in?: Maybe<String[] | String>;
+  notes_not_in?: Maybe<String[] | String>;
+  notes_lt?: Maybe<String>;
+  notes_lte?: Maybe<String>;
+  notes_gt?: Maybe<String>;
+  notes_gte?: Maybe<String>;
+  notes_contains?: Maybe<String>;
+  notes_not_contains?: Maybe<String>;
+  notes_starts_with?: Maybe<String>;
+  notes_not_starts_with?: Maybe<String>;
+  notes_ends_with?: Maybe<String>;
+  notes_not_ends_with?: Maybe<String>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -837,9 +885,11 @@ export interface BeerUpdateManyWithWhereNestedInput {
 export interface BeerUpdateManyDataInput {
   name?: Maybe<String>;
   image?: Maybe<String>;
-  abv?: Maybe<Int>;
+  availability?: Maybe<Boolean>;
+  abv?: Maybe<Float>;
   body?: Maybe<String>;
   description?: Maybe<String>;
+  notes?: Maybe<String>;
 }
 
 export interface UserUpsertWithoutVotesInput {
@@ -856,9 +906,11 @@ export interface VoteUpsertWithWhereUniqueWithoutBeerInput {
 export interface BeerUpdateManyMutationInput {
   name?: Maybe<String>;
   image?: Maybe<String>;
-  abv?: Maybe<Int>;
+  availability?: Maybe<Boolean>;
+  abv?: Maybe<Float>;
   body?: Maybe<String>;
   description?: Maybe<String>;
+  notes?: Maybe<String>;
 }
 
 export interface UserCreateInput {
@@ -942,9 +994,11 @@ export interface Beer {
   id: ID_Output;
   name: String;
   image: String;
-  abv: Int;
+  availability: Boolean;
+  abv: Float;
   body: String;
   description: String;
+  notes: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -953,9 +1007,11 @@ export interface BeerPromise extends Promise<Beer>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   image: () => Promise<String>;
-  abv: () => Promise<Int>;
+  availability: () => Promise<Boolean>;
+  abv: () => Promise<Float>;
   body: () => Promise<String>;
   description: () => Promise<String>;
+  notes: () => Promise<String>;
   postedBy: <T = UserPromise>() => T;
   votes: <T = FragmentableArray<Vote>>(args?: {
     where?: VoteWhereInput;
@@ -976,9 +1032,11 @@ export interface BeerSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   image: () => Promise<AsyncIterator<String>>;
-  abv: () => Promise<AsyncIterator<Int>>;
+  availability: () => Promise<AsyncIterator<Boolean>>;
+  abv: () => Promise<AsyncIterator<Float>>;
   body: () => Promise<AsyncIterator<String>>;
   description: () => Promise<AsyncIterator<String>>;
+  notes: () => Promise<AsyncIterator<String>>;
   postedBy: <T = UserSubscription>() => T;
   votes: <T = Promise<AsyncIterator<VoteSubscription>>>(args?: {
     where?: VoteWhereInput;
@@ -999,9 +1057,11 @@ export interface BeerNullablePromise
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   image: () => Promise<String>;
-  abv: () => Promise<Int>;
+  availability: () => Promise<Boolean>;
+  abv: () => Promise<Float>;
   body: () => Promise<String>;
   description: () => Promise<String>;
+  notes: () => Promise<String>;
   postedBy: <T = UserPromise>() => T;
   votes: <T = FragmentableArray<Vote>>(args?: {
     where?: VoteWhereInput;
@@ -1366,9 +1426,11 @@ export interface BeerPreviousValues {
   id: ID_Output;
   name: String;
   image: String;
-  abv: Int;
+  availability: Boolean;
+  abv: Float;
   body: String;
   description: String;
+  notes: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -1379,9 +1441,11 @@ export interface BeerPreviousValuesPromise
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   image: () => Promise<String>;
-  abv: () => Promise<Int>;
+  availability: () => Promise<Boolean>;
+  abv: () => Promise<Float>;
   body: () => Promise<String>;
   description: () => Promise<String>;
+  notes: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -1392,9 +1456,11 @@ export interface BeerPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   image: () => Promise<AsyncIterator<String>>;
-  abv: () => Promise<AsyncIterator<Int>>;
+  availability: () => Promise<AsyncIterator<Boolean>>;
+  abv: () => Promise<AsyncIterator<Float>>;
   body: () => Promise<AsyncIterator<String>>;
   description: () => Promise<AsyncIterator<String>>;
+  notes: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -1508,9 +1574,14 @@ The `String` scalar type represents textual data, represented as UTF-8 character
 export type String = string;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+The `Boolean` scalar type represents `true` or `false`.
 */
-export type Int = number;
+export type Boolean = boolean;
+
+/*
+The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).
+*/
+export type Float = number;
 
 /*
 DateTime scalar input type, allowing Date
@@ -1523,9 +1594,9 @@ DateTime scalar output type, which is always a string
 export type DateTimeOutput = string;
 
 /*
-The `Boolean` scalar type represents `true` or `false`.
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
 */
-export type Boolean = boolean;
+export type Int = number;
 
 export type Long = string;
 

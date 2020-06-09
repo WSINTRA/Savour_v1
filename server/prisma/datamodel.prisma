@@ -2,11 +2,13 @@ type Beer {
   id: ID! @id
   name: String!
   image: String!
-  abv: Int!
+  availability: Boolean!
+  abv: Float!
   body: String!
   description: String!
+  notes: String!
   postedBy: User
-	votes: [Vote!]!
+  votes: [Vote!]!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt  
 }
