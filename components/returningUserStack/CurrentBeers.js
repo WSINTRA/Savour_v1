@@ -1,171 +1,266 @@
 // import * as React from "react";
 import { MainTitle } from "../../comps";
 // import { View, Text } from "react-native";
-import { FadeInView } from '../../fadeInView';
-import React, { useRef } from "react";
+import { FadeInView } from "../../fadeInView";
+import React, { useRef, useState } from "react";
 import {
   SafeAreaView,
   ScrollView,
   Text,
   StyleSheet,
   View,
-  ImageBackground,
+  Image,
+  Dimensions,
   Animated,
-  useWindowDimensions
+  useWindowDimensions,
 } from "react-native";
+import {
+  offWhite,
+  dimOrange,
+  buttonGrey,
+  borderGrey,
+  buttonBlack,
+  buttonTextGrey,
+} from "../../colors";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
+
+const { height, width } = Dimensions.get("window");
+
 function currentBeers() {
   return (
     <FadeInView>
       <MainTitle headingTitle={"CURRENT BEERS"} rightIcon={"bell-outline"} />
-      <View>
-          
-        <Text>This is where the current beers component will go</Text>
-        <ScrollingBeers/>
-      </View>
-      </FadeInView>
+      <ScrollingBeers />
+    </FadeInView>
   );
 }
 export default currentBeers;
 
-//This component has to render a slide paginated component with different beers available.
-//Begin by creating 2 mock beers with an image, a title, a subtitle and a description
-//Once mock data is created implement a sliding navigation
+//TODO : Build out share button
 
-const MockData = [
-  
-    {
-      title: "Mock Beer 1",
-      subtitle: "Mock Beer 1 made at home",
-      description: "lorem ipsum laddee laddaaa",
-      image:
-        "https://media1.fdncms.com/pittsburgh/imager/u/original/16003077/pittsburghrhythmandbooze.jpg",
-    },
-    {
-      title: "Mock Beer 2",
-      subtitle: "Mock Beer 2 made in anothe rplace",
-      description: "ANything goes",
-      image:
-        "https://9b16f79ca967fd0708d1-2713572fef44aa49ec323e813b06d2d9.ssl.cf2.rackcdn.com/1140x_a10-7_cTC/Dancing-Gnome-2-1580417336.jpg",
-    },
- 
-];
-
-
-const images = [
-  "https://images.unsplash.com/photo-1556740749-887f6717d7e4",
-  "https://images.unsplash.com/photo-1556740749-887f6717d7e4",
-  "https://images.unsplash.com/photo-1556740749-887f6717d7e4",
-  "https://images.unsplash.com/photo-1556740749-887f6717d7e4",
-  "https://images.unsplash.com/photo-1556740749-887f6717d7e4",
-  "https://images.unsplash.com/photo-1556740749-887f6717d7e4"
-];
+const BEER_QUERY = gql`
+  {
+    product(filter: "") {
+      beers {
+        name
+        image
+        abv
+        body
+        description
+        notes
+        availability
+      }
+    }
+  }
+`;
 
 function ScrollingBeers() {
   const scrollX = useRef(new Animated.Value(0)).current;
-
-  const { width: windowWidth } = useWindowDimensions();
-
+  const [beerState, setBeersState] = useState([{ name: "Loading" }]);
   return (
-    <SafeAreaView >
+    <SafeAreaView>
       <View style={styles.scrollContainer}>
         <ScrollView
           horizontal={true}
-          style={styles.scrollViewStyle}
           pagingEnabled
           showsHorizontalScrollIndicator={false}
           onScroll={Animated.event([
             {
               nativeEvent: {
                 contentOffset: {
-                  x: scrollX
-                }
-              }
-            }
+                  x: scrollX,
+                },
+              },
+            },
           ])}
           scrollEventThrottle={1}
         >
-          {MockData.map((prodCard, imageIndex) => {
+          {beerState.map((prodCard, imageIndex) => {
             return (
               <View
-                style={{ width: windowWidth, height: 250 }}
+                style={{ width: width, height: height - 120 }}
                 key={imageIndex}
               >
-                <ImageBackground source={{ uri: prodCard.image }} style={styles.card}>
-                  <View style={styles.textContainer}>
-                    <Text style={styles.infoText}>
-                      {prodCard.title}
-                    </Text>
+                <ScrollView>
+                  <Image
+                    source={{ uri: prodCard.image }}
+                    style={styles.cardImage}
+                  />
+
+                  <View style={styles.cardDetails}>
+                    <View style={styles.floatingShare}>
+                      {/* Build out this share function so it shares the current Beer/product */}
+                      <MaterialCommunityIcons
+                        style={{ color: offWhite }}
+                        name="share-variant"
+                        size={32}
+                      />
+                    </View>
+                    <View>
+                      <Text style={styles.infoTitle}>{prodCard.name}</Text>
+                    </View>
+                    <View>
+                      <Text style={styles.infoSubtitle}>{prodCard.body}</Text>
+                      <Text>ABV: {prodCard.abv}</Text>
+                    </View>
+                    <View style={styles.infoDescription}>
+                      <Text>{prodCard.description}</Text>
+                    </View>
+                    <View style={styles.infoDescription}>
+                      <Text>{prodCard.notes}</Text>
+                    </View>
                   </View>
-                </ImageBackground>
+                </ScrollView>
+                <View
+                  style={[
+                    styles.cardButton,
+                    prodCard.availability
+                      ? { backgroundColor: dimOrange }
+                      : { backgroundColor: buttonTextGrey },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      prodCard.availability
+                        ? { color: buttonGrey }
+                        : { color: offWhite },
+                      styles.cardButtonText,
+                    ]}
+                  >
+                    {prodCard.availability ? "GET IT" : "SOLD OUT"}
+                  </Text>
+                </View>
               </View>
             );
           })}
+          <Query query={BEER_QUERY}>
+            {({ loading, error, data }) => {
+              if (loading)
+                return (
+                  <View>
+                    <Text>Fetching</Text>
+                  </View>
+                );
+              if (error) return <Text>Error{console.log(error)}</Text>;
+              const productData = data.product.beers;
+              setBeersState(productData);
+              return null;
+            }}
+          </Query>
         </ScrollView>
+
         <View style={styles.indicatorContainer}>
-          {MockData.map((image, imageIndex) => {
-            const width = scrollX.interpolate({
-              inputRange: [
-                windowWidth * (imageIndex - 1),
-                windowWidth * imageIndex,
-                windowWidth * (imageIndex + 1)
-              ],
-              outputRange: [8, 16, 8],
-              extrapolate: "clamp"
-            });
-            return (
-              <Animated.View
-                key={imageIndex}
-                style={[styles.normalDot, { width }]}
-              />
-            );
-          })}
+          {beerState
+            ? beerState.map((image, imageIndex) => {
+                const color = scrollX.interpolate({
+                  inputRange: [
+                    width * (imageIndex - 1),
+                    width * imageIndex,
+                    width * (imageIndex + 1),
+                  ],
+                  outputRange: [buttonTextGrey, buttonBlack, buttonTextGrey],
+                  extrapolate: "clamp",
+                });
+                return (
+                  <Animated.View
+                    key={imageIndex}
+                    style={[styles.normalDot, { backgroundColor: color }]}
+                  />
+                );
+              })
+            : null}
         </View>
       </View>
     </SafeAreaView>
   );
 }
-
+//Put this styleSheet into the global.js and change references to styles in the components
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  },
   scrollContainer: {
-    height: 300,
+    backgroundColor: offWhite,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "flex-end",
   },
-  card: {
+  cardDetails: {
     flex: 1,
-    marginVertical: 4,
-    marginHorizontal: 16,
-    borderRadius: 5,
+    justifyContent: "flex-start",
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  floatingShare: {
+    position: "absolute",
+    right: 30,
+    top: -20,
+    backgroundColor: dimOrange,
+    borderRadius: 50,
+    height: 50,
+    width: 50,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  cardButton: {
+    backgroundColor: dimOrange,
+    alignItems: "center",
+    alignSelf: "center",
+    alignContent: "center",
+    justifyContent: "center",
+    width: width,
+    height: 50,
+    textAlign: "center",
+    flexDirection: "row",
+    margin: "auto",
+  },
+  cardButtonText: {
+    letterSpacing: 3,
+    fontWeight: "bold",
+  },
+  cardImage: {
+    width: 400,
+    height: 350,
     overflow: "hidden",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   textContainer: {
     backgroundColor: "rgba(0,0,0, 0.7)",
     paddingHorizontal: 24,
     paddingVertical: 8,
-    borderRadius: 5
+    borderRadius: 5,
   },
-  infoText: {
-    color: "white",
+  infoTitle: {
+    paddingTop: 30,
+    textTransform: "uppercase",
+    color: buttonGrey,
     fontSize: 16,
-    fontWeight: "bold"
+    fontWeight: "bold",
+  },
+  infoSubtitle: {
+    paddingTop: 10,
+    textTransform: "uppercase",
+    color: buttonGrey,
+    fontSize: 16,
+  },
+  infoDescription: {
+    paddingTop: 10,
+    color: buttonGrey,
   },
   normalDot: {
     height: 8,
     width: 8,
     borderRadius: 4,
-    backgroundColor: "silver",
-    marginHorizontal: 4
+    backgroundColor: "black",
+    marginHorizontal: 4,
   },
   indicatorContainer: {
+    position: "absolute",
+    backgroundColor: "rgba(255,255,255, 0.8)",
+    width: width,
+    height: 12,
+    bottom: 52,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });

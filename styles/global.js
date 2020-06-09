@@ -1,5 +1,4 @@
-import { StyleSheet } from "react-native";
-import { Dimensions } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import { offWhite, dimOrange, buttonGrey, borderGrey, buttonBlack, backgroundWhite } from "../colors";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
