@@ -3,6 +3,95 @@ import { offWhite, dimOrange, buttonGrey, borderGrey, buttonBlack, backgroundWhi
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
+export const currentBeerStyle = StyleSheet.create({
+  scrollContainer: {
+    backgroundColor: offWhite,
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  cardDetails: {
+    flex: 1,
+    justifyContent: "flex-start",
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  floatingShare: {
+    position: "absolute",
+    right: 30,
+    top: -20,
+    backgroundColor: dimOrange,
+    borderRadius: 50,
+    height: 50,
+    width: 50,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  cardButton: {
+    backgroundColor: dimOrange,
+    alignItems: "center",
+    alignSelf: "center",
+    alignContent: "center",
+    justifyContent: "center",
+    width: windowWidth,
+    height: 50,
+    textAlign: "center",
+    flexDirection: "row",
+    margin: "auto",
+  },
+  cardButtonText: {
+    letterSpacing: 3,
+    fontWeight: "bold",
+  },
+  cardImage: {
+    width: 400,
+    height: 350,
+    overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  textContainer: {
+    backgroundColor: "rgba(0,0,0, 0.7)",
+    paddingHorizontal: 24,
+    paddingVertical: 8,
+    borderRadius: 5,
+  },
+  infoTitle: {
+    paddingTop: 30,
+    textTransform: "uppercase",
+    color: buttonGrey,
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  infoSubtitle: {
+    paddingTop: 10,
+    textTransform: "uppercase",
+    color: buttonGrey,
+    fontSize: 16,
+  },
+  infoDescription: {
+    paddingTop: 10,
+    color: buttonGrey,
+  },
+  normalDot: {
+    height: 8,
+    width: 8,
+    borderRadius: 4,
+    backgroundColor: "black",
+    marginHorizontal: 4,
+  },
+  indicatorContainer: {
+    position: "absolute",
+    backgroundColor: "rgba(255,255,255, 0.8)",
+    width: windowWidth,
+    height: 12,
+    bottom: 52,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
+
+
 export const drawerStyles = StyleSheet.create({
   label:  {
     textTransform: "uppercase",

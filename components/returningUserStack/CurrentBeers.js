@@ -1,24 +1,22 @@
-// import * as React from "react";
+import { currentBeerStyle } from "../../styles/global";
 import { MainTitle } from "../../comps";
-// import { View, Text } from "react-native";
 import { FadeInView } from "../../fadeInView";
 import React, { useRef, useState } from "react";
 import {
   SafeAreaView,
   ScrollView,
   Text,
-  StyleSheet,
+  Share,
   View,
   Image,
   Dimensions,
   Animated,
-  useWindowDimensions,
+  TouchableOpacity,
 } from "react-native";
 import {
   offWhite,
   dimOrange,
   buttonGrey,
-  borderGrey,
   buttonBlack,
   buttonTextGrey,
 } from "../../colors";
@@ -56,12 +54,31 @@ const BEER_QUERY = gql`
   }
 `;
 
+const onShare = async (beerTitle) => {
+  try {
+    const result = await Share.share({
+      message: `@Savour has ${beerTitle} for sale today. This will sell out quickly, so signup and grab a few now!`,
+    });
+    if (result.action === Share.sharedAction) {
+      if (result.activityType) {
+        // shared with activity type of result.activityType
+      } else {
+        // shared
+      }
+    } else if (result.action === Share.dismissedAction) {
+      // dismissed
+    }
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
 function ScrollingBeers() {
   const scrollX = useRef(new Animated.Value(0)).current;
   const [beerState, setBeersState] = useState([{ name: "Loading" }]);
   return (
     <SafeAreaView>
-      <View style={styles.scrollContainer}>
+      <View style={currentBeerStyle.scrollContainer}>
         <ScrollView
           horizontal={true}
           pagingEnabled
@@ -86,36 +103,41 @@ function ScrollingBeers() {
                 <ScrollView>
                   <Image
                     source={{ uri: prodCard.image }}
-                    style={styles.cardImage}
+                    style={currentBeerStyle.cardImage}
                   />
 
-                  <View style={styles.cardDetails}>
-                    <View style={styles.floatingShare}>
-                      {/* Build out this share function so it shares the current Beer/product */}
-                      <MaterialCommunityIcons
-                        style={{ color: offWhite }}
-                        name="share-variant"
-                        size={32}
-                      />
+                  <View style={currentBeerStyle.cardDetails}>
+                    <View style={currentBeerStyle.floatingShare}>
+                      <TouchableOpacity onPress={() => onShare(prodCard.name)}>
+                        <MaterialCommunityIcons
+                          style={{ color: offWhite }}
+                          name="share-variant"
+                          size={32}
+                        />
+                      </TouchableOpacity>
                     </View>
                     <View>
-                      <Text style={styles.infoTitle}>{prodCard.name}</Text>
+                      <Text style={currentBeerStyle.infoTitle}>
+                        {prodCard.name}
+                      </Text>
                     </View>
                     <View>
-                      <Text style={styles.infoSubtitle}>{prodCard.body}</Text>
+                      <Text style={currentBeerStyle.infoSubtitle}>
+                        {prodCard.body}
+                      </Text>
                       <Text>ABV: {prodCard.abv}</Text>
                     </View>
-                    <View style={styles.infoDescription}>
+                    <View style={currentBeerStyle.infoDescription}>
                       <Text>{prodCard.description}</Text>
                     </View>
-                    <View style={styles.infoDescription}>
+                    <View style={currentBeerStyle.infoDescription}>
                       <Text>{prodCard.notes}</Text>
                     </View>
                   </View>
                 </ScrollView>
                 <View
                   style={[
-                    styles.cardButton,
+                    currentBeerStyle.cardButton,
                     prodCard.availability
                       ? { backgroundColor: dimOrange }
                       : { backgroundColor: buttonTextGrey },
@@ -124,9 +146,9 @@ function ScrollingBeers() {
                   <Text
                     style={[
                       prodCard.availability
-                        ? { color: buttonGrey }
+                        ? { color: buttonBlack }
                         : { color: offWhite },
-                      styles.cardButtonText,
+                      currentBeerStyle.cardButtonText,
                     ]}
                   >
                     {prodCard.availability ? "GET IT" : "SOLD OUT"}
@@ -138,21 +160,25 @@ function ScrollingBeers() {
           <Query query={BEER_QUERY}>
             {({ loading, error, data }) => {
               if (loading)
+                //TODO: replace this with a loading screen
                 return (
                   <View>
                     <Text>Fetching</Text>
                   </View>
                 );
+              //TODO: Create a more robust error logging method
               if (error) return <Text>Error{console.log(error)}</Text>;
+
               const productData = data.product.beers;
+              //Assign query data into the state hook
               setBeersState(productData);
               return null;
             }}
           </Query>
         </ScrollView>
 
-        <View style={styles.indicatorContainer}>
-          {beerState
+        <View style={currentBeerStyle.indicatorContainer}>
+          {beerState //This creates the pagination visual animations on swiping through beers
             ? beerState.map((image, imageIndex) => {
                 const color = scrollX.interpolate({
                   inputRange: [
@@ -166,7 +192,10 @@ function ScrollingBeers() {
                 return (
                   <Animated.View
                     key={imageIndex}
-                    style={[styles.normalDot, { backgroundColor: color }]}
+                    style={[
+                      currentBeerStyle.normalDot,
+                      { backgroundColor: color },
+                    ]}
                   />
                 );
               })
@@ -176,91 +205,3 @@ function ScrollingBeers() {
     </SafeAreaView>
   );
 }
-//Put this styleSheet into the global.js and change references to styles in the components
-const styles = StyleSheet.create({
-  scrollContainer: {
-    backgroundColor: offWhite,
-    alignItems: "center",
-    justifyContent: "flex-end",
-  },
-  cardDetails: {
-    flex: 1,
-    justifyContent: "flex-start",
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
-  floatingShare: {
-    position: "absolute",
-    right: 30,
-    top: -20,
-    backgroundColor: dimOrange,
-    borderRadius: 50,
-    height: 50,
-    width: 50,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  cardButton: {
-    backgroundColor: dimOrange,
-    alignItems: "center",
-    alignSelf: "center",
-    alignContent: "center",
-    justifyContent: "center",
-    width: width,
-    height: 50,
-    textAlign: "center",
-    flexDirection: "row",
-    margin: "auto",
-  },
-  cardButtonText: {
-    letterSpacing: 3,
-    fontWeight: "bold",
-  },
-  cardImage: {
-    width: 400,
-    height: 350,
-    overflow: "hidden",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  textContainer: {
-    backgroundColor: "rgba(0,0,0, 0.7)",
-    paddingHorizontal: 24,
-    paddingVertical: 8,
-    borderRadius: 5,
-  },
-  infoTitle: {
-    paddingTop: 30,
-    textTransform: "uppercase",
-    color: buttonGrey,
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  infoSubtitle: {
-    paddingTop: 10,
-    textTransform: "uppercase",
-    color: buttonGrey,
-    fontSize: 16,
-  },
-  infoDescription: {
-    paddingTop: 10,
-    color: buttonGrey,
-  },
-  normalDot: {
-    height: 8,
-    width: 8,
-    borderRadius: 4,
-    backgroundColor: "black",
-    marginHorizontal: 4,
-  },
-  indicatorContainer: {
-    position: "absolute",
-    backgroundColor: "rgba(255,255,255, 0.8)",
-    width: width,
-    height: 12,
-    bottom: 52,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
