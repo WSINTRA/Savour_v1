@@ -36,9 +36,11 @@ const LoginForm = (props) => {
   const navigation = useNavigation();
   const { buttonStyle, email, changeInputText, password, _confirm, checkForReadyButton } = props;
   
-  const validations =()=>{
-    if(password.length > 2 && email.length > 2){
-      return true
+  const validations = ()=>{
+    if(password){
+      if(password.length > 2 && email.length > 2){
+        return true
+      }
     }
     return false
   }
